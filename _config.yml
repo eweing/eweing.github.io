@@ -1,13 +1,10 @@
-title: CodingDragon
-baseurl: ""
-
-date_format: "%Y-%m-%d"
-
-google_analytics:
-disqus_shortname:
-
-# Build settings
-markdown:     redcarpet
-redcarpet:
-  extensions: ['smart', 'tables', 'with_toc_data']
-permalink:    pretty
+name: Simply Grey
+markdown: redcarpet
+pygments: true
+github: https://www.github.com/exaem
+about: I am an independent developer from the sunny UK. I dabble in Ruby, play in C and I'm an avid systems administrator.
+urls:
+    - text: github
+      url: https://github.com/exaem
+    - text: email
+      url: mailto:exaem@exaem.co.uk
