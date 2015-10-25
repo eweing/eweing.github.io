@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>
+    
+      Coding Dragon &middot; Meaning of Life
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/styles.css">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/atom+xml" title="Coding Dragon" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <div class="container content">
+      <header class="masthead">
+        <h3 class="masthead-title">
+          <a href="/" title="Home">Coding Dragon</a>
+          <small>Meaning of Life</small>
+        </h3>
+      </header>
+
+      <main>
+        <div class="posts">
+  
+  <article class="post">
+    <h1 class="post-title">
+      <a href="/study/2015/10/25/02-SQL-Injection/">
+        SQL Injection
+      </a>
+    </h1>
+    
+    <time datetime="2015-10-25T00:00:00+09:00" class="post-date">25 Oct 2015</time>
+
+    <h2 id="sql--">SQL 삽입 공격</h2>
+<p>응용 프로그램의 보안 상 허점을 의도적으로 이용해, 개발자가 생각하지 못한 SQL문을 실행되게 함으로써 데이터베이스를 비정상적으로 조작하는 공격 방법</p>
+
+<ol>
+  <li>접근 제어를 우회할 수 있음</li>
+  <li>일반적인 인증과 인증 확인을 무시한 채 OS 단계 명령을 수행</li>
+  <li>DB 내부의 데이터를 뽑아낼 수 있음</li>
+</ol>
+
+<p>개발자가 쓴 쿼리의 나머지 부분을 무시하고 공격자의 쿼리만을 실행할 수 있게 하기 위해 - - (SQL문법상 주석 처리) 를 붙인다.</p>
+
+<hr />
+
+<h4 id="php">예시 - 01. 로그인 (PHP)</h4>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?</span> <span class="nx">php</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM member WHERE ID=&#39;</span><span class="si">$id</span><span class="s2">&#39; AND PW=&#39;</span><span class="si">$pw</span><span class="s2">&#39;&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">mysql_num_rows</span><span class="p">(</span><span class="nv">$result</span><span class="p">))</span> <span class="p">{</span>
+      <span class="c1">// 로그인 성공</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// 사용자의 아이디와 비밀번호가 틀리므로 로그인 실패</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>일반적인 경우 이 로직은 정상적으로 로그인 기능을 수행한다.</p>
+
+<p>하지만 여기서 $id에 ‘ OR ‘1’=’1’ –’ 와 같은 값이 들어가게 되면 SQL 쿼리문은 다음과 같이 된다.</p>
+
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">member</span> <span class="k">WHERE</span> <span class="n">ID</span><span class="o">=</span><span class="s1">&#39; OR &#39;</span><span class="mi">1</span><span class="s1">&#39;=&#39;</span><span class="mi">1</span><span class="s1">&#39; -- &#39;</span> <span class="k">AND</span> <span class="n">PW</span><span class="o">=</span><span class="s1">&#39;$pw&#39;</span></code></pre></div>
+
+<p>ID 내부에 있는 - - 값으로 인해 이후가 주석처리되고 반드시 로그인 되는 현상이 발생한다.</p>
+
+<hr />
+
+<h4 id="php-1">예시 - 02. 글과 패스워드 출력 (PHP)</h4>
+<p>다음과 같은 쿼리가 존재할 때</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+    <span class="nv">$query</span>  <span class="o">=</span> <span class="s2">&quot;SELECT id, name, inserted, size FROM products</span>
+<span class="s2">               WHERE size = &#39;</span><span class="si">$size</span><span class="s2">&#39;</span>
+<span class="s2">               ORDER BY </span><span class="si">$order</span><span class="s2"> LIMIT </span><span class="si">$limit</span><span class="s2">, </span><span class="si">$offset</span><span class="s2">;&quot;</span><span class="p">;</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">odbc_exec</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$query</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>아래와 같은 질의를 입력함으로써 글과 패스워드를 모두 출력할 수 있다.</p>
+
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="s1">&#39;</span>
+<span class="s1">union select &#39;</span><span class="mi">1</span><span class="s1">&#39;, concat(uname||&#39;</span><span class="o">-</span><span class="s1">&#39;||passwd) as name, &#39;</span><span class="mi">1971</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="s1">&#39;, &#39;</span><span class="mi">0</span><span class="err">&#39;</span> <span class="k">from</span> <span class="n">usertable</span><span class="p">;</span>
+<span class="c1">--</span></code></pre></div>
+
+<hr />
+
+<h4 id="section">해결방법</h4>
+<p>이를 해결하는 방법은 다음과 같이 $id 와 $pw 같이 입력 받는 값을 변수에 넣어 유효성 검사를 진행하거나 SQL에 맞게 인코딩 하면 된다.</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?</span> <span class="nx">php</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="nb">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+    <span class="nv">$pw</span> <span class="o">=</span> <span class="nb">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$pw</span><span class="p">);</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM member WHERE ID=&#39;</span><span class="si">$id</span><span class="s2">&#39; AND PW=&#39;</span><span class="si">$pw</span><span class="s2">&#39;&quot;</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">mysql_num_rows</span><span class="p">(</span><span class="nv">$result</span><span class="p">))</span> <span class="p">{</span>
+      <span class="c1">// 로그인 성공.</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// 사용자의 아이디와 비밀번호가 틀리므로 로그인 실패</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<hr />
+
+<h3 id="section-1">정리</h3>
+<p>SQL Injection은 입력 필드에 SQL문을 입력함으로써
+기존의 쿼리를 무시하고 공격자가 의도하는 쿼리를 수행해
+데이터베이스를 비정상적으로 조작하는 공격이다.</p>
+
+<p>이러한 공격을 막기 위해서는
+입력받은 값의 유효성을 검사하거나, SQL 인코딩을 통해 올바른 값이 들어가도록 처리 해야 한다.</p>
+
+<p>JDBC MySQL의 경우 Statement 문을 사용하면 입력받은 값을 sql문에 연결하여 하나의 SQL문으로 만든 뒤 query 를 실행하는데,
+이 경우 SQL Injection 공격에 피해를 받기 쉽다.</p>
+
+<p>따라서 sql문에 연결 하기 전 유효성 검사를 하거나, PreparedStatement 문을 사용하여 데이터 타입에 맞춰 값을 설정할 수 있도록 처리해야 하겠다.</p>
+
+  </article>
+  
+</div>
+
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/page2">Older</a>
+  
+  
+    <span class="pagination-item newer">Newer</span>
+  
+</div>
+
+      </main>
+
+      <footer class="footer">
+        <small>
+          &copy; <time datetime="2015-10-25T20:35:09+09:00">2015</time>. All rights reserved.
+        </small>
+      </footer>
+    </div>
+
+  </body>
+</html>

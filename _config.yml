@@ -1,10 +1,30 @@
-name: Simply Grey
-markdown: redcarpet
-pygments: true
-github: https://www.github.com/exaem
-about: I am an independent developer from the sunny UK. I dabble in Ruby, play in C and I'm an avid systems administrator.
-urls:
-    - text: github
-      url: https://github.com/exaem
-    - text: email
-      url: mailto:exaem@exaem.co.uk
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+relative_permalinks: true
+
+# Setup
+title:               Coding Dragon
+tagline:             Meaning of Life
+url:                 http://eweing.github.io
+paginate:            1
+baseurl:             ""
+
+# Assets
+#
+# We specify the directory for Jekyll so we can use @imports.
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+# About/contact
+author:
+  name:              Gajin Park
+  url:               https://eweing.github.io
+  email:             gadol.park@gmail.com
+
+# Custom vars
+version:             1.0.0
+github:
+  repo:              https://github.com/eweing/eweing.github.io.git
