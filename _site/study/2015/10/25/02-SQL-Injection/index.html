@@ -115,12 +115,12 @@
 데이터베이스를 비정상적으로 조작하는 공격이다.</p>
 
 <p>이러한 공격을 막기 위해서는
-입력받은 값의 유효성을 검사하거나, SQL 인코딩을 통해 올바른 값이 들어가도록 처리 해야 한다.</p>
+입력받은 값의 자료형을 검사하거나, SQL 인코딩을 통해 올바른 값이 들어가도록 처리 해야 한다.</p>
 
 <p>JDBC MySQL의 경우 Statement 문을 사용하면 입력받은 값을 sql문에 연결하여 하나의 SQL문으로 만든 뒤 query 를 실행하는데,
 이 경우 SQL Injection 공격에 피해를 받기 쉽다.</p>
 
-<p>따라서 sql문에 연결 하기 전 유효성 검사를 하거나, PreparedStatement 문을 사용하여 데이터 타입에 맞춰 값을 설정할 수 있도록 처리해야 하겠다.</p>
+<p>따라서 sql문에 연결 하기 전 반드시 자료형 검사를 하거나, PreparedStatement 문을 사용하여 데이터 타입에 맞춰 값을 설정할 수 있도록 처리해야 하겠다.</p>
 
 </article>
 
@@ -128,6 +128,15 @@
 <aside class="related">
   <h2>Related Posts</h2>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/study/2015/10/25/03-LVS-and-L4Switch/">
+            LVS vs L4 Switch
+            <small><time datetime="2015-10-25T00:00:00+09:00">25 Oct 2015</time></small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
@@ -146,7 +155,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-10-25T20:35:09+09:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-10-25T21:47:59+09:00">2015</time>. All rights reserved.
         </small>
       </footer>
     </div>

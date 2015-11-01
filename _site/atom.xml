@@ -4,13 +4,94 @@
  <title>Coding Dragon</title>
  <link href="http://eweing.github.io/atom.xml" rel="self"/>
  <link href="http://eweing.github.io/"/>
- <updated>2015-10-25T20:35:09+09:00</updated>
+ <updated>2015-10-25T21:47:59+09:00</updated>
  <id>http://eweing.github.io</id>
  <author>
    <name>Gajin Park</name>
    <email>gadol.park@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>LVS vs L4 Switch</title>
+   <link href="http://eweing.github.io/study/2015/10/25/03-LVS-and-L4Switch/"/>
+   <updated>2015-10-25T00:00:00+09:00</updated>
+   <id>http://eweing.github.io/study/2015/10/25/03-LVS-and-L4Switch</id>
+   <content type="html">&lt;h2 id=&quot;load-balancing&quot;&gt;로드밸런싱 (Load Balancing)&lt;/h2&gt;
+&lt;p&gt;특정 프로세스에게 과부하가 걸렸을 때 이를 분산해서 처리하는 방식. &lt;br /&gt;
+웹 서비스의 경우 해당 서비스로 인해 발생하는 트래픽이 많을 경우
+여러 대의 서버가 해당 트래픽을 분산 처리 하는 것을 말한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;목적&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;처리량 증가&lt;/li&gt;
+  &lt;li&gt;응답시간 최소화&lt;/li&gt;
+  &lt;li&gt;리소스 사용 최적화&lt;/li&gt;
+  &lt;li&gt;특정 서버 자원에게 과부하가 걸리는 것을 피하기 위함&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;서버 로드밸런싱&lt;/h2&gt;
+&lt;p&gt;한 쪽 서버에만 지나치게 요청이 들어오지 않도록 사용량을 분배하는 것.&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;알고리즘&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Hasing&lt;/strong&gt; &lt;br /&gt;
+새로운 연결(TCP/UDP)이 일어날 경우 각 클라이언트에 대한 hasing key를 가지고 경로를 설정한다.
+hasing key는 클라이언트의 IP와 port, 혹은 IP 주소 만으로 결정된다.
+메모리를 적게 사용하고 요구 절차가 간단하다.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Round-Robin&lt;/strong&gt; &lt;br /&gt;
+라운드 로빈 방식으로 처리. &lt;br /&gt;
+각 클라이언트는 동일하게 취급되며, 각 서버나 경로는 같은 처리량을 보유해야 한다.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Weighted Round-Robin&lt;/strong&gt; &lt;br /&gt;
+서로 다른 처리 능력을 가진 서버가 있을 경우 사용한다. &lt;br /&gt;
+가중치를 줘서 많이 처리할 수 있는 서버로 많은 트래픽을 할당한다.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Least Connection&lt;/strong&gt; &lt;br /&gt;
+연결 수가 가장 적은 서버로 네트워크를 연결한다.
+동적인 분산 알고리즘으로 각 서버에 대한 현재 연결 수를 동적으로 카운트 할 수 있다.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Weighted Least Connection&lt;/strong&gt; &lt;br /&gt;
+서버의 처리 능력을 고려하여 가중치를 부여하면서 Least Connection을 적용. &lt;br /&gt;
+트래픽을 골고루 분산시킨다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;서비스 방식&lt;/h3&gt;
+&lt;p&gt;네트워크 상단에 L4 스위치 가상 서버가 존재하여
+서버로 들어오는 패킷을 리얼 서버로 트래픽을 균일하게 부하 분산 시킨다.
+만약 리얼서버 중 정상적으로 작동하지 않는 서버가 있다면,
+이를 감지하여 정상적으로 작동하는 서버에게 트래픽을 부하 분산 시킨다.&lt;/p&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;장점&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;고가의 서버로 확장하지 않고 저렴한 비용으로 다수의 서버를 증설하여 경제적을 비용절감 할 수 있다.&lt;/li&gt;
+  &lt;li&gt;대량의 트래픽으로 특정 서버에게 부하가 발생할 경우 L4 스위치가 이를 감지하여 합리적으로 부하 분산을 처리한다.&lt;/li&gt;
+  &lt;li&gt;1대의 서버 장애가 발생해도 서비스 중단 없이 다른 서버에게 트래픽을 분배하여 서비스 운영이 끊기지 않는다.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;l4-switch&quot;&gt;L4 Switch&lt;/h2&gt;
+&lt;p&gt;IP 주소와 포트를 기반으로 로드밸런싱하는 고가의 하드웨어이다. &lt;br /&gt;
+웬만한 서비스에서는 이것만으로도 부하분산을 처리할 수 있다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;lvs&quot;&gt;LVS&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Linux Virtual Server&lt;/strong&gt; &lt;br /&gt;
+리눅스 가상 서버 &lt;br /&gt;
+고가용성 서버를 구축하기 위해 리눅스 머신을 로드밸런스 하도록 도와주는 운영시스템&lt;/p&gt;
+
+&lt;p&gt;한 대의 서버로 증가하는 인터넷 사용자를 처리하기 힘들어지면서 &lt;br /&gt;
+고가용성 서버&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;를 구축 하기 위한 리눅스 머신 로드밸런싱을 도와주는 운영 시스템이다.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+
+      &lt;p&gt;&lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+</content>
+ </entry>
  
  <entry>
    <title>SQL Injection</title>
@@ -92,12 +173,12 @@
 데이터베이스를 비정상적으로 조작하는 공격이다.&lt;/p&gt;
 
 &lt;p&gt;이러한 공격을 막기 위해서는
-입력받은 값의 유효성을 검사하거나, SQL 인코딩을 통해 올바른 값이 들어가도록 처리 해야 한다.&lt;/p&gt;
+입력받은 값의 자료형을 검사하거나, SQL 인코딩을 통해 올바른 값이 들어가도록 처리 해야 한다.&lt;/p&gt;
 
 &lt;p&gt;JDBC MySQL의 경우 Statement 문을 사용하면 입력받은 값을 sql문에 연결하여 하나의 SQL문으로 만든 뒤 query 를 실행하는데,
 이 경우 SQL Injection 공격에 피해를 받기 쉽다.&lt;/p&gt;
 
-&lt;p&gt;따라서 sql문에 연결 하기 전 유효성 검사를 하거나, PreparedStatement 문을 사용하여 데이터 타입에 맞춰 값을 설정할 수 있도록 처리해야 하겠다.&lt;/p&gt;
+&lt;p&gt;따라서 sql문에 연결 하기 전 반드시 자료형 검사를 하거나, PreparedStatement 문을 사용하여 데이터 타입에 맞춰 값을 설정할 수 있도록 처리해야 하겠다.&lt;/p&gt;
 </content>
  </entry>
  
