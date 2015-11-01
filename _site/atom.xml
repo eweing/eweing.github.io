@@ -4,7 +4,7 @@
  <title>CodingDragon</title>
  <link href="http://eweing.github.io/atom.xml" rel="self"/>
  <link href="http://eweing.github.io/"/>
- <updated>2015-11-01T22:35:14+09:00</updated>
+ <updated>2015-11-02T00:45:45+09:00</updated>
  <id>http://eweing.github.io</id>
  <author>
    <name>Gajin Park</name>
@@ -13,19 +13,603 @@
 
  
  <entry>
-   <title>RDBMS</title>
-   <link href="http://eweing.github.io/bookreader/2015/11/01/RDBMS/"/>
+   <title>RDBMS Physical Design</title>
+   <link href="http://eweing.github.io/bookreader/2015/11/01/RDBMS-Physical-Design/"/>
    <updated>2015-11-01T00:00:00+09:00</updated>
-   <id>http://eweing.github.io/bookreader/2015/11/01/RDBMS</id>
-   <content type="html">&lt;h1 id=&quot;rdbms--&quot;&gt;RDBMS의 정의와 종류&lt;/h1&gt;
-
-&lt;h1 id=&quot;database-&quot;&gt;DATABASE의 역할&lt;/h1&gt;
-
-&lt;h1 id=&quot;rdb-application&quot;&gt;RDB와 Application&lt;/h1&gt;
+   <id>http://eweing.github.io/bookreader/2015/11/01/RDBMS-Physical-Design</id>
+   <content type="html">&lt;h2 id=&quot;section&quot;&gt;물리적 설계&lt;/h2&gt;
+&lt;p&gt;실제 물리적으로 데이터베이스를 모델링 하는 단계. &lt;br /&gt;
+FK로 내려 받은 컬럼들이 인덱스로 설계되는 과정, 뷰와 저장공간 계획,
+부모-자식 간의 무결성처리 등을 함으로써 벼때인 논리 모델링에 살을 붙이는 작업 진행&lt;/p&gt;
 
 &lt;hr /&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;정리&lt;/h2&gt;
+&lt;h3 id=&quot;constraint---&quot;&gt;제약조건(Constraint) 정의 및 설계&lt;/h3&gt;
+&lt;p&gt;참조 무결성 처리 &lt;br /&gt;
+논리적 모델링을 마치고 PK와 FK의 관계를 데이터베이스에 정의. &lt;br /&gt;
+&lt;strong&gt;&lt;em&gt;제약조건은 반드시 해야 하는 것이 아니다.&lt;/em&gt;&lt;/strong&gt; &lt;br /&gt;
+비즈니스 룰 또는 프로그램 로직 성격에 따라 결정하는 것.&lt;/p&gt;
+
+&lt;h4 id=&quot;constraint----1&quot;&gt;Constraint를 지정한다는 것 ?&lt;/h4&gt;
+&lt;p&gt;PK와 FK가 입력, 수정, 삭제에 대해서 데이터에 일관성을 주겠다는 의미.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;제한 (Restrict)
+    &lt;ul&gt;
+      &lt;li&gt;PK를 수정할 때, 해당 PK를 FK로 가지고 있는 테이블이 여러개 존재한다면 PK가 수정되지 않도록 함&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;연쇄 (Cascade)
+    &lt;ul&gt;
+      &lt;li&gt;PK를 수정할 때, 해당 PK를 FK로 가지고 있는 테이블이 여러개 존재한다면 PK를 연쇄적으로 수정.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;데이터 타입&lt;/h3&gt;
+
+&lt;h4 id=&quot;varchar2&quot;&gt;Varchar2&lt;/h4&gt;
+&lt;p&gt;VARCHAR2와 CHAR 모두 문자형 타입이지만, 가장 큰 차이는 가변길이이다.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;VARCHAR2&lt;/th&gt;
+      &lt;th&gt;CHAR&lt;/th&gt;
+      &lt;th&gt; &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;가변길이&lt;/td&gt;
+      &lt;td&gt;입력된 길이만큼 저장&lt;/td&gt;
+      &lt;td&gt;남는 공간엔 공백이 들어감.&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;최대길이&lt;/td&gt;
+      &lt;td&gt;4000 Byte&lt;/td&gt;
+      &lt;td&gt;2000 Byte&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;특징&lt;/td&gt;
+      &lt;td&gt;PCTFREE 값이 적절하지 않을 경우 문제가 발생할 수 있음.&lt;/td&gt;
+      &lt;td&gt;길이의 편차가 있는 경우 저장공간 낭비와 수행속도 저하 현상 발생 가능&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;number&quot;&gt;Number&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;숫자가 들어간다고 해서 반드시 Number 타입으로 지정 할 필요 없음&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;가변 길이 저장 형식을 따르고 있음&lt;/li&gt;
+  &lt;li&gt;LIKE 검색을 사용하는 경우 NUMBER 타입으로 저장하지 말 것.
+    &lt;ul&gt;
+      &lt;li&gt;해당 컬럼의 모든 변수를 문자형으로 변형하여 자료를 검색한다.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;숫자와 관련된 모든 표현이 가능하지만 38자리 까지만 표현 가능&lt;/li&gt;
+  &lt;li&gt;Primary Key 값을 입력받는 키 값이 숫자일 경우를 제외하고 INDEX를 생성 해야 하는 경우엔
+VARCHAR2 타입을 사용하는 것이 좋다.
+    &lt;ul&gt;
+      &lt;li&gt;단, 연산을 하거나 소수점을 입력 하는 경우 소수점 이하 부분이 반올림 되므로 잘 고려해야 함.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;number--&quot;&gt;Number 타입의 표현&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+      &lt;td&gt;NUMBER&lt;/td&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+      &lt;td&gt;NUMBER(9)&lt;/td&gt;
+      &lt;td&gt;1234568&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+      &lt;td&gt;NUMBER(9,2)&lt;/td&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+      &lt;td&gt;NUMBER(9,1)&lt;/td&gt;
+      &lt;td&gt;1234567.9&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+      &lt;td&gt;NUMBER(6)&lt;/td&gt;
+      &lt;td&gt;exceeds precision&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+      &lt;td&gt;NUMBER(7,-2)&lt;/td&gt;
+      &lt;td&gt;1234500&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1234567.89&lt;/td&gt;
+      &lt;td&gt;NUMBER(7,2)&lt;/td&gt;
+      &lt;td&gt;exceeds precision&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.1234&lt;/td&gt;
+      &lt;td&gt;NUMBER(4,5)&lt;/td&gt;
+      &lt;td&gt;.01234&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.00012&lt;/td&gt;
+      &lt;td&gt;NUMBER(4,5)&lt;/td&gt;
+      &lt;td&gt;.00012&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.000126&lt;/td&gt;
+      &lt;td&gt;NUMBER(4,5)&lt;/td&gt;
+      &lt;td&gt;.00013&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.0000012&lt;/td&gt;
+      &lt;td&gt;NUMBER(2,7)&lt;/td&gt;
+      &lt;td&gt;.0000012&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.00000123&lt;/td&gt;
+      &lt;td&gt;NUMBER(2,7)&lt;/td&gt;
+      &lt;td&gt;.0000012&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;date&quot;&gt;Date&lt;/h4&gt;
+&lt;p&gt;타입 지정 방법은 숫자 형식과 비슷 하다. &lt;br /&gt;
+날짜 연산이 자유로워 많이 사용하고 있지만,
+일반적으로 시간을 제외한 날짜 연산이 자주 발생하는 경우를 제외하고는
+VARCHAR2를 사용하고, TO_DATE() 함수를 사용하는 것이 좋다.&lt;/p&gt;
+
+&lt;h4 id=&quot;date-&quot;&gt;Date타입의 표현&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;DATE&lt;/th&gt;
+      &lt;th&gt;FROM&lt;/th&gt;
+      &lt;th&gt;TO&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;YEAR&lt;/td&gt;
+      &lt;td&gt;-4712&lt;/td&gt;
+      &lt;td&gt;9999&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MONTH&lt;/td&gt;
+      &lt;td&gt;01(0)&lt;/td&gt;
+      &lt;td&gt;12(11)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DAY&lt;/td&gt;
+      &lt;td&gt;01&lt;/td&gt;
+      &lt;td&gt;31&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;HOUR&lt;/td&gt;
+      &lt;td&gt;00(0)&lt;/td&gt;
+      &lt;td&gt;23&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MINUTE&lt;/td&gt;
+      &lt;td&gt;00(0)&lt;/td&gt;
+      &lt;td&gt;59&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SECOND&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;59.9&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TIMEZONE_HOUR&lt;/td&gt;
+      &lt;td&gt;-12&lt;/td&gt;
+      &lt;td&gt;13&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TIMEZONE_MINUTE&lt;/td&gt;
+      &lt;td&gt;00&lt;/td&gt;
+      &lt;td&gt;59&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>RDBMS Data Modeling (2)</title>
+   <link href="http://eweing.github.io/bookreader/2015/11/01/RDBMS-Data-Modeling-2/"/>
+   <updated>2015-11-01T00:00:00+09:00</updated>
+   <id>http://eweing.github.io/bookreader/2015/11/01/RDBMS-Data-Modeling-2</id>
+   <content type="html">&lt;h2 id=&quot;section&quot;&gt;상세 개념 데이터 모델링&lt;/h2&gt;
+&lt;p&gt;기본적으로는 Entity, 속성, 관계를 바탕으로 표현하는 것이지만,
+기본 개념 데이터 모델보다 어려울 수 있음.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;primary-key&quot;&gt;기본키 (Primary Key)&lt;/h3&gt;
+&lt;p&gt;UID가 상세 개념으로 넘어오면서 PK로 변한다.&lt;/p&gt;
+
+&lt;h4 id=&quot;pk-&quot;&gt;PK의 특징&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;테이블에 한개 또는 그 이상 존재한다.&lt;/li&gt;
+  &lt;li&gt;테이블의 모든 데이터를 Unique하게 만들어준다. &lt;br /&gt;
+즉 PK를 통해 각 ROW를 구분할 수 있다.&lt;/li&gt;
+  &lt;li&gt;모든 테이블에는 반드시 PK가 존재한다.&lt;/li&gt;
+  &lt;li&gt;NOT NULL&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;pk&quot;&gt;상속받는 PK&lt;/h4&gt;
+&lt;p&gt;PK는 자식 Entity에 상속 가능.  &lt;br /&gt;
+이 경우 자식 Entity에는 속성명을 적지 않는다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;foreign-key&quot;&gt;외부키 (Foreign Key)&lt;/h3&gt;
+&lt;p&gt;관계에서 상속받는 UID가 현재 테이블의 FK가 되는 경우 사용. &lt;br /&gt;
+PK로 상속 받는 것과 차이가 있다. 단순히 두 테이블 간의 관계를 성립하기 위해 사용하는 것. &lt;br /&gt;
+상속받은 자신은 따로 PK가 존재한다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;normalizing-normalization&quot;&gt;정규화 (Normalizing, Normalization)&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;제 1정규형&lt;/strong&gt; &lt;br /&gt;
+&lt;em&gt;모든 Attribute는 원자값을 갖는다. 반복 형태가 있어서는 안된다.&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;제 2정규형&lt;/strong&gt; &lt;br /&gt;
+&lt;em&gt;모든 Attribute는 반드시 UID에 종속되어야 한다.&lt;/em&gt; &lt;br /&gt;
+만약 UID 일부에 종속된다면, 해당 Attribute는 다른 테이블로 옮겨져야 한다. &lt;br /&gt;
+제 2정규형을 따름으로써 부모 자식 관계로 종속되어 있는 테이블의 속성값은
+입력, 수정시 불필요한 데이터 입력량을 줄일 수 있다.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;제 3정규형&lt;/strong&gt; &lt;br /&gt;
+&lt;em&gt;UID가 아닌 Attribute사이에는 서로 종속될 수 없다.&lt;/em&gt; &lt;br /&gt;
+다음과 같은 경우에 하는 것이 좋다. &lt;br /&gt;
+» 또 다른 자식 Entity가 생겨날 때 &lt;br /&gt;
+» 서브타입의 하위속성이 계속 추가될 때 &lt;br /&gt;
+» 다른 Entity에서도 관계를 갖게될 때&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;section-1&quot;&gt;제 1 정규형&lt;/h4&gt;
+&lt;p&gt;환자와 진료기록&lt;/p&gt;
+
+&lt;h4 id=&quot;section-2&quot;&gt;제 2 정규형&lt;/h4&gt;
+&lt;p&gt;주문 내역 Entity에서 물품 정보와 배송 정보를 다른 Entity로 빼내기&lt;/p&gt;
+
+&lt;h4 id=&quot;section-3&quot;&gt;제 3 정규형&lt;/h4&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;mm-1m&quot;&gt;M:M? 1:M!&lt;/h3&gt;
+&lt;p&gt;대다수의 데이터는 M:M 관계이지만, DB에 저장하고 효율적으로 관리하기 위해서는 1:M 관계로 풀어내야 한다. &lt;br /&gt;
+환자와 의사의 경우, 직접적으로 연결하면 M:M 관계지만, &lt;br /&gt;
+그 사이에 진료목록 Entity를 넣으면 의사-진료목록, 진료목록-환자 간에 1:M 관계를 만들 수 있다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-4&quot;&gt;순환관계&lt;/h3&gt;
+&lt;p&gt;자기자신을 참조하는 경우. &lt;br /&gt;
+순환관계의 가장 대표적인 예는 바로 게시판이다. &lt;br /&gt;
+게시판에서는 자신의 글 밑에 다른 사람들의 댓글이 달리는 구조. &lt;br /&gt;
+그 외에도 ‘회사 &amp;gt; 공장 &amp;gt; 부서 &amp;gt; 팀’ 처럼 조직 Entity를 순환 관계 설정하는 경우도 있다. &lt;br /&gt;
+1:M 혹은 1:1 관계로 표현&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;bom&quot;&gt;BOM&lt;/h3&gt;
+&lt;p&gt;Bill of Material (자재명세서) &lt;br /&gt;
+제품 하나가 어떤 부품들로 이루어져 있는가에 대한 데이터. &lt;br /&gt;
+M:M 순환관계를 풀어낼 때 주로 사용.&lt;/p&gt;
+
+&lt;h4 id=&quot;entity--bom&quot;&gt;부품 Entity로 알아보는 BOM&lt;/h4&gt;
+&lt;p&gt;제품은 여러 부품으로 구성되고 또 하나의 부품도 여러 부품으로 구성된다. &lt;br /&gt;
+이 경우 부품과 부품은 M:M 관계를 맺음. &lt;br /&gt;
+이러한 M:M 순환관계의 모델을 교차 Entity 생성으로 해결할 수 있다.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-5&quot;&gt;시계열관리 (이력관리)&lt;/h3&gt;
+&lt;p&gt;이력관리를 위해서는 일반적으로 이력 관리용 Entity를 생성하는 것이 원칙. &lt;br /&gt;
+하지만 자신의 Entity 자체가 이력이 되는 경우도 있음.&lt;/p&gt;
+
+&lt;h4 id=&quot;section-6&quot;&gt;이력관리 모델 선정시 고려 해야 하는 것&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;과거 데이터의 쓰임새&lt;/li&gt;
+  &lt;li&gt;검색 유무&lt;/li&gt;
+  &lt;li&gt;입력 후 수정이나 삭제와 같은 이벤트 관리가 필요한지&lt;/li&gt;
+  &lt;li&gt;시간이 지난 후 모델간 관계가 변할 수 있는지&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;entity-&quot;&gt;Entity 형태&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;교차 Entity&lt;/li&gt;
+  &lt;li&gt;Attribute를 분리하여 Entity로 변환&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;section-7&quot;&gt;배터적 관계와 데이터 통합&lt;/h3&gt;
+&lt;p&gt;Entity를 선정하고 모델링 하는 과정에서
+특정 Entity가 다른 두 개 이상의 Entity 모두와 관계를 가지는 경우 있음.
+이러한 경우를 배타적 관계라고 한다. &lt;br /&gt;
+&lt;strong&gt;&lt;em&gt;서로 다른 두 개의 Entity를 가지고 합집합을 이루지만 둘 중 하나를 선택해야 하는 경우&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;section-8&quot;&gt;배타적 관계가 발생하는 이유?&lt;/h4&gt;
+&lt;p&gt;모델링을 하면서 Entity 자체를 명확하게 구분짓지 못하기 때문.&lt;/p&gt;
+
+&lt;h4 id=&quot;section-9&quot;&gt;배타적 관계가 발생했을 경우?&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;? Entity 통합을 할 것인가?&lt;/strong&gt; &lt;br /&gt;
+» Entity의 융통성이 좋아지지만, Entity의 의미 자체가 모호해 질 수 있다. &lt;br /&gt;
+&lt;strong&gt;? 현재 의미 그대로 둘 것인가?&lt;/strong&gt; &lt;br /&gt;
+» 의미는 분명해지지만, 유사한 Entity가 추가되고
+새로운 프로세스가 추가될 때 또 다른 배타적 관계가 생성될 수 있다.&lt;/p&gt;
+
+&lt;h4 id=&quot;section-10&quot;&gt;배타적 관계 표현&lt;/h4&gt;
+&lt;p&gt;일반적으로 Arc(호)로 표현. &lt;br /&gt;
+아크는 하나의 Entity에 속해야 함.
+하나의 Entity에 다수의 아크가 사용될 수 있어도, 다른 Entity의 아크와 겹쳐질 수는 없다.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;\&lt;/th&gt;
+      &lt;th&gt;장점&lt;/th&gt;
+      &lt;th&gt;단점&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;통합&lt;/td&gt;
+      &lt;td&gt;데이터 액세스가 간편&lt;/td&gt;
+      &lt;td&gt;테이블 컬럼 수 증가&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;수행 속도가 좋아질 수 있음.&lt;/td&gt;
+      &lt;td&gt;테이블 블록 수가 증가&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;복잡한 처리를 하나의 SQL로 통합 가능.&lt;/td&gt;
+      &lt;td&gt;인덱스 크기가 증가&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;분할&lt;/td&gt;
+      &lt;td&gt;처리시마다 SubType 유형 구분이 불필요&lt;/td&gt;
+      &lt;td&gt;트랜잭션 처리시 여러 테이블을 처리&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;전체 테이블 스캔시 유리&lt;/td&gt;
+      &lt;td&gt;UID 유지 관리가 어려움&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt; &lt;/td&gt;
+      &lt;td&gt;단위 테이블의 크기가 감소&lt;/td&gt;
+      &lt;td&gt;복잡한 처리의 SQL 통합이 어려움&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;denormalizing-denormalization&quot;&gt;반정규화 (Denormalizing, Denormalization)&lt;/h3&gt;
+&lt;p&gt;정규화 과정을 거치는 것이 모델링의 기본 조건이지만,
+정규화를 모두 충족시켰을 때 수행 속도가 떨어질 수 있다. &lt;br /&gt;
+이 때 선택적으로 테이블을 재분할 할 것인지 중복 테이블과 컬럼을 생성시킬 것인지를 고려하고
+테이블을 제거하는 경우 또한 고려해야 한다. &lt;br /&gt;
+즉, 선택적으로 반정규화를 통해 이러한 문제들을 해결 한다는 것.&lt;/p&gt;
+
+&lt;h4 id=&quot;section-11&quot;&gt;반정규화 예시&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;테이블 통합
+    &lt;ul&gt;
+      &lt;li&gt;SubType을 SuperType으로 통합&lt;/li&gt;
+      &lt;li&gt;1:1 관계를 하나의 Entity로 통합&lt;/li&gt;
+      &lt;li&gt;1:M 관계의 통합&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;테이블 분할
+    &lt;ul&gt;
+      &lt;li&gt;수직, 수평 분할&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;테이블 추가
+    &lt;ul&gt;
+      &lt;li&gt;중복 테이블&lt;/li&gt;
+      &lt;li&gt;이력 테이블&lt;/li&gt;
+      &lt;li&gt;통계(연산) 테이블&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>RDBMS Data Modeling (1)</title>
+   <link href="http://eweing.github.io/bookreader/2015/11/01/RDBMS-Data-Modeling-1/"/>
+   <updated>2015-11-01T00:00:00+09:00</updated>
+   <id>http://eweing.github.io/bookreader/2015/11/01/RDBMS-Data-Modeling-1</id>
+   <content type="html">&lt;h2 id=&quot;section&quot;&gt;개념 데이터 모델링&lt;/h2&gt;
+
+&lt;h3 id=&quot;entity&quot;&gt;개체 (Entity)&lt;/h3&gt;
+&lt;p&gt;주로 하나의 테이블로 표현됨.
+* 무엇을 Entity로 설정할 것인가? &lt;br /&gt;
+» 관리하고자 하는 것이 무엇인가를 생각할 것.
+1. 무엇을 관리할 것인가?
+2. 집합의 근거가 객관적인가?
+3. 집합을 이룰 수 있는가?
+4. 영속적으로 존재하는 것인가?
+5. 모든 Entity는 식별자(UID)를 가져야 한다.
+6. 하나 이상의 명확한 속성을 포함하고 있는가?&lt;/p&gt;
+
+&lt;h4 id=&quot;entity-&quot;&gt;Entity의 표현&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;모서리가 둥근 박스, 혹은 직사각형.&lt;/li&gt;
+  &lt;li&gt;이름과 속성이 들어갈 자리를 구분&lt;/li&gt;
+  &lt;li&gt;이름은 함축적인 명사형 단어를 선택&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;entity--1&quot;&gt;Entity의 종류&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Key Entity&lt;/em&gt;&lt;/strong&gt; &lt;br /&gt;
+최상위 Entity. 데이터를 생성하고 하위 데이터를 발생시키지만, 자신의 데이터 값은 거의 변하지 않음.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Main Entity&lt;/em&gt;&lt;/strong&gt; &lt;br /&gt;
+Key Entity로부터 생겨난 자식 Entity지만 실제 업무의 중심 역할을 함.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;&lt;em&gt;Action Entity&lt;/em&gt;&lt;/strong&gt; &lt;br /&gt;
+실제 업무 활동을 뜻하는 것으로, 가장 많은 데이터를 보유 &lt;br /&gt;
+물품 판매, 일일 프로젝트 수행 이력 등
+실제 클라이언트 측에서 발생되는 데이터가 빈번히 입/출력 및 수정 되는 Entity를 뜻함.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;attribute&quot;&gt;속성 (Attribute)&lt;/h3&gt;
+&lt;p&gt;Entity를 정의하고 표현하는 속성.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;납품 업체 Entity  &lt;br /&gt;
+» 납품 업체의 이름, 사업자 번호, 전화번호, 주소 등이 애트리뷰트로 선언될 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;entity--2&quot;&gt;Entity인가 속성인가?&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;?&lt;/strong&gt; 회원 테이블에서 관리자와 일반 회원은 다른 Entity로 두어야 하는가? &lt;br /&gt;
+&lt;strong&gt;?&lt;/strong&gt; 유선 전화기와 무선 전화기는 서로 다른 Entity로 두어야 하는가?&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;uid&quot;&gt;식별자 (UID)&lt;/h3&gt;
+&lt;p&gt;Unique Identifier &lt;br /&gt;
+Entity를 대표하는 값이자 모든 데이터를 구분 지을 수 있는 식별자. &lt;br /&gt;
+즉, Entity의 내용들을 함축할 수 있어야 하는 대표적인 키 값.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Entity에서 #으로 표현&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;?&lt;/strong&gt; 회원 테이블에서 회원의 id를 UID로 잡아도 되는가?&lt;/p&gt;
+
+&lt;h4 id=&quot;uid-1&quot;&gt;두 개 이상의 UID&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;영화표 Entity를 생각해보자 &lt;br /&gt;
+» 영화표의 UID는 무엇으로 해야 할까? &lt;br /&gt;
+&lt;strong&gt;?&lt;/strong&gt; 상영날짜로 모든 영화표를 구분할 수 있는가? &lt;br /&gt;
+&lt;strong&gt;?&lt;/strong&gt; 상영시간으로 모든 영화표를 구분할 수 있는가? &lt;br /&gt;
+&lt;strong&gt;?&lt;/strong&gt; 좌석번호로 모든 영화표를 구분할 수 있는가?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;relationships&quot;&gt;관계 정의 (Relationships)&lt;/h3&gt;
+&lt;p&gt;Relationship은 Entity간의 관계를 규정하기 위한 것으로써,
+관계를 통해 UID를 상속받으며 부모와 자식간의 관계를 정립시키는 역할을 한다.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;두 Entity간의 현재의 명확한 근거나 미래의 관계를 생각하여 표현 해 주는 것&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;entity---&quot;&gt;두 Entity 간의 관계 표시&lt;/h4&gt;
+&lt;p&gt;일반적으로 부모에서 자식으로의 표현은, 부모에서 점선으로 출발한다. &lt;br /&gt;
+&lt;em&gt;» 부모는 자식을 가질 수도, 가지지 않을 수도 있기 때문&lt;/em&gt; &lt;br /&gt;
+부모가 있으므로 자식이 반드시 생긴다면, 실선으로 출발한다. &lt;br /&gt;
+그리고 받는 쪽은 삼지창 모양의 세 선으로 Many를 표현.&lt;/p&gt;
+
+&lt;h4 id=&quot;uid-&quot;&gt;UID의 상속&lt;/h4&gt;
+&lt;p&gt;부모의 UID를 자식이 상속 받는 경우는 자식 쪽에 막대기를 그려 넣어 표현. &lt;br /&gt;
+한 명의 사원이 하나의 부서를 갖는 것이 아니라,
+한 사원이 영업부, 기획부 등 여러 개의 소속을 갖는 경우
+부서별 사원이라는 Entity를 따로 만들었다고 했을 때,
+부서별 사원 Entity는 부서의 UID와 사원의 UID를 상속 받아야 함&lt;/p&gt;
+
+&lt;h4 id=&quot;m1&quot;&gt;관계명칭 표현과 M:1&lt;/h4&gt;
+&lt;p&gt;가장 일반적인 관계. 자식 : 부모의 관계이다. &lt;br /&gt;
+운동선수와 프로팀의 관계로 예를 든다면 프로팀이 존재해야 그 팀의 소속선수가 있는 것과 같다. &lt;br /&gt;
+양방향을 왼쪽에서 오른쪽, 오른쪽에서 왼쪽으로 차례대로 표현. &lt;br /&gt;
+관계명칭은 대체로 부사나 형용사로 표현 해 주는 것이 의미상 해석하기 좋음.&lt;/p&gt;
+
+&lt;h4 id=&quot;mm-11-&quot;&gt;M:M과 1:1 관계&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;M:M 관계 &lt;br /&gt;
+의사와 환자의 경우, 환자는 여러 의사에게 진료를 받을 수 있고, 의사는 여러 환자를 진료할 수 있다.&lt;/li&gt;
+  &lt;li&gt;1:1 관계 &lt;br /&gt;
+침대 하나에 매트리스 하나가 들어갈 수 있다. 이 경우 1:1 &lt;br /&gt;
+하지만, 침대에 넣을 수 있는 매트리스 교체 이력을 생각한다면 1:M 관계가 된다. &lt;br /&gt;
+1:1로 생각되었다가 하나의 Entity로 통합되는 경우가 굉장히 많음. &lt;br /&gt;
+따라서 1:1관계가 존재하더라도 상속의 개념 보다는 의미상 표현에 가까울 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>RDBMS Concept</title>
+   <link href="http://eweing.github.io/bookreader/2015/11/01/RDBMS-Concept/"/>
+   <updated>2015-11-01T00:00:00+09:00</updated>
+   <id>http://eweing.github.io/bookreader/2015/11/01/RDBMS-Concept</id>
+   <content type="html">&lt;h2 id=&quot;rdbms--&quot;&gt;RDBMS의 정의와 종류&lt;/h2&gt;
+
+&lt;h3 id=&quot;rdbms&quot;&gt;RDBMS&lt;/h3&gt;
+&lt;p&gt;Relational Database Management system&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;계층형 모델&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;데이터 레코드들을 계층 구조로 표현&lt;/li&gt;
+  &lt;li&gt;계속해서 자식을 형성해 나가는 구조.&lt;/li&gt;
+  &lt;li&gt;다른 레코드에 대한 포인터를 가지고 가리키는 구조&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;네트워크형 모델&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;데이터베이스가 레코드 타입과 링크로 구성되어 있음&lt;/li&gt;
+  &lt;li&gt;자식 레코드가 부모 레코드를 가리키는 포인터를 가질 수 있음&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;rdb-relational-database&quot;&gt;RDB (Relational Database)&lt;/h3&gt;
+&lt;p&gt;각각의 테이블에 데이터를 집어 넣고 &lt;br /&gt;
+상호관계에 따라 데이터를 결합함으로써 유용한 정보를 창출 &lt;br /&gt;
+하지만, 각각의 시스템 환경과 작업 규모에 따라서 DBMS 선택을 고려해야 한다.&lt;/p&gt;
+
+&lt;h3 id=&quot;rdb-&quot;&gt;RDB 이론&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;데이터베이스 시스템은 사용자에게 제공되는 논리적 관점과,
+데이터베이스가 저장되는 물리적 구조가 확연히 구별 되어야 한다.&lt;/li&gt;
+  &lt;li&gt;데이터는 테이블 폼 안에서 보여져야 한다.&lt;/li&gt;
+  &lt;li&gt;하나의 테이블 안에서 구성된 n개의 속성은 관계를 구성한다.&lt;/li&gt;
+  &lt;li&gt;각 테이블은 하나 이상의 테이블에 키가 되는 컬럼을 갖고 있다. &lt;br /&gt;
+그 키에 포함된 속성들은 각 관계를 식별한다.&lt;/li&gt;
+  &lt;li&gt;데이터베이스에 접근할 수 있도록 고안된 상위레벨의 언어를 제공한다.&lt;/li&gt;
+  &lt;li&gt;공통컬럼을 가진 테이블끼리 JOIN 연산이 가능해야 한다.&lt;/li&gt;
+  &lt;li&gt;관계연산을 이용하여 수학적으로 정의된 연산이 가능해야 한다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;database-&quot;&gt;Database의 역할&lt;/h2&gt;
+
+&lt;h3 id=&quot;mis-management-information-system&quot;&gt;MIS (Management Information System)&lt;/h3&gt;
+&lt;p&gt;경영 정보 시스템&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CRM (Customer Relationship Management) 고객 관계 관리&lt;/li&gt;
+  &lt;li&gt;ERP (Enterprise Resource Planning) 전사적 자원관리&lt;/li&gt;
+  &lt;li&gt;SCM (Supply Chain Management) 공급망 관리&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;다양한 부분에서 핵심 시스템으로 사용됨&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;정리&lt;/h2&gt;
+&lt;p&gt;다양한 Management System에서 사용되고 있는 데이터베이스 &lt;br /&gt;
+단순히 정보를 쌓는 역할만 하지말고, 이를 체계적으로 관리하고 분석한다면 &lt;br /&gt;
+그 속에서 새로운 핵심 정보를 찾아낼 수 있다.&lt;/p&gt;
 </content>
  </entry>
  
@@ -46,6 +630,8 @@
   &lt;li&gt;리소스 사용 최적화&lt;/li&gt;
   &lt;li&gt;특정 서버 자원에게 과부하가 걸리는 것을 피하기 위함&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;hr /&gt;
 
 &lt;h2 id=&quot;section-1&quot;&gt;서버 로드밸런싱&lt;/h2&gt;
 &lt;p&gt;한 쪽 서버에만 지나치게 요청이 들어오지 않도록 사용량을 분배하는 것.&lt;/p&gt;
@@ -103,10 +689,15 @@ hasing key는 클라이언트의 IP와 port, 혹은 IP 주소 만으로 결정�
 &lt;hr /&gt;
 
 &lt;h2 id=&quot;lvs--l4&quot;&gt;LVS &amp;amp; L4&lt;/h2&gt;
-&lt;p&gt;두 개 모두 로드밸런싱을 위해 사용된다.
-* L4는 로드밸런싱 처리를 위한 알고리즘이 탑재 되어 있음. 변경하는 것이 까다로움. LVS는 사용자가 직접 세팅 가능.
-* L4는 가격이 매우 비싼 반면, LVS는 오픈 소스가 존재하여 상대적으로 저렴하게 운영 가능.
-* L4는 하드웨어, LVS는 소프트웨어&lt;/p&gt;
+&lt;p&gt;두 개 모두 로드밸런싱을 위해 사용된다.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;L4는 로드밸런싱 처리를 위한 알고리즘이 탑재 되어 있음. 변경하는 것이 까다로움. &lt;br /&gt;
+LVS는 사용자가 직접 세팅 가능.&lt;/li&gt;
+  &lt;li&gt;L4는 장비 가격이 매우 비쌈. &lt;br /&gt;
+LVS는 오픈 소스가 존재하여 상대적으로 저렴하게 운영 가능.&lt;/li&gt;
+  &lt;li&gt;L4는 하드웨어, LVS는 소프트웨어&lt;/li&gt;
+&lt;/ul&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:1&quot;&gt;
