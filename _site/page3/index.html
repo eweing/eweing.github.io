@@ -10,7 +10,7 @@
 
   <title>
     
-      Coding Dragon &middot; Meaning of Life
+      CodingDragon &middot; Meaning of Life
     
   </title>
 
@@ -22,7 +22,7 @@
   <link rel="shortcut icon" href="/public/favicon.ico">
 
   <!-- RSS -->
-  <link rel="alternate" type="application/atom+xml" title="Coding Dragon" href="/atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="CodingDragon" href="/atom.xml">
 </head>
 
 
@@ -31,7 +31,7 @@
     <div class="container content">
       <header class="masthead">
         <h3 class="masthead-title">
-          <a href="/" title="Home">Coding Dragon</a>
+          <a href="/" title="Home">CodingDragon</a>
           <small>Meaning of Life</small>
         </h3>
       </header>
@@ -41,308 +41,94 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/gadol/2015/10/25/01-First-step/">
-        First Step
+      <a href="/study/2015/10/25/02-SQL-Injection/">
+        SQL Injection
       </a>
     </h1>
-    
+
     <time datetime="2015-10-25T00:00:00+09:00" class="post-date">25 Oct 2015</time>
 
-    <p>이미지 입력
-<img src="/assets/images/FlakCannon_Large.png" alt="My Flak Cannon" /></p>
-
-<p>Trying out lists:</p>
-
-<ul>
-  <li>Item</li>
-  <li>Item 2</li>
-  <li>Item 3</li>
-</ul>
-
-<p>Or Ordered lists</p>
+    <h2 id="sql--">SQL 삽입 공격</h2>
+<p>응용 프로그램의 보안 상 허점을 의도적으로 이용해, 개발자가 생각하지 못한 SQL문을 실행되게 함으로써 데이터베이스를 비정상적으로 조작하는 공격 방법</p>
 
 <ol>
-  <li>Yo</li>
-  <li>Is</li>
-  <li>Cool</li>
+  <li>접근 제어를 우회할 수 있음</li>
+  <li>일반적인 인증과 인증 확인을 무시한 채 OS 단계 명령을 수행</li>
+  <li>DB 내부의 데이터를 뽑아낼 수 있음</li>
 </ol>
 
-<p>Nested Lists</p>
-
-<ol>
-  <li>Item 1
-    <ol>
-      <li>A corollary to the above item.</li>
-      <li>Yet another point to consider.</li>
-    </ol>
-  </li>
-  <li>Item 2
-    <ul>
-      <li>A corollary that does not need to be ordered.
-        <ul>
-          <li>This is indented four spaces, because it’s two spaces further than the item above.</li>
-          <li>You might want to consider makign a new list.</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>Item 3</li>
-</ol>
-
-<p>In the words of Abraham Lincoln:</p>
-
-<blockquote>
-  <p>Pardon my french</p>
-</blockquote>
+<p>개발자가 쓴 쿼리의 나머지 부분을 무시하고 공격자의 쿼리만을 실행할 수 있게 하기 위해 - - (SQL문법상 주석 처리) 를 붙인다.</p>
 
 <hr />
 
-<p><em>This text will be italic</em></p>
+<h4 id="php">예시 - 01. 로그인 (PHP)</h4>
 
-<p><strong>This text will be bold</strong></p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?</span> <span class="nx">php</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM member WHERE ID=&#39;</span><span class="si">$id</span><span class="s2">&#39; AND PW=&#39;</span><span class="si">$pw</span><span class="s2">&#39;&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">mysql_num_rows</span><span class="p">(</span><span class="nv">$result</span><span class="p">))</span> <span class="p">{</span>
+      <span class="c1">// 로그인 성공</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// 사용자의 아이디와 비밀번호가 틀리므로 로그인 실패</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<p><strong>Everyone <em>must</em> attend the meeting at 5 o’clock today.</strong></p>
+<p>일반적인 경우 이 로직은 정상적으로 로그인 기능을 수행한다.</p>
 
-<hr />
+<p>하지만 여기서 $id에 ‘ OR ‘1’=’1’ –’ 와 같은 값이 들어가게 되면 SQL 쿼리문은 다음과 같이 된다.</p>
 
-<h2 id="section">이런 식으로 링크를 넣을 수 있다.</h2>
-<p>Check out the <a href="http://jekyllrb.com">Jekyll docs</a> for more info on how to get the most out of Jekyll. File all bugs/feature requests at <a href="https://github.com/jekyll/jekyll">Jekyll’s GitHub repo</a>. If you have questions, you can ask them on <a href="https://github.com/jekyll/jekyll-help">Jekyll’s dedicated Help repository</a>.</p>
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">member</span> <span class="k">WHERE</span> <span class="n">ID</span><span class="o">=</span><span class="s1">&#39; OR &#39;</span><span class="mi">1</span><span class="s1">&#39;=&#39;</span><span class="mi">1</span><span class="s1">&#39; -- &#39;</span> <span class="k">AND</span> <span class="n">PW</span><span class="o">=</span><span class="s1">&#39;$pw&#39;</span></code></pre></div>
 
-<p>Check out this neat program I wrote:</p>
-
-<p><code>x = 2
-x = 2 + 2
-what is x
-</code></p>
-
-<p>루비 프로그래밍</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">print_hi</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
-  <span class="nb">puts</span> <span class="s2">&quot;Hi, </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="k">end</span>
-<span class="n">print_hi</span><span class="p">(</span><span class="s1">&#39;Tom&#39;</span><span class="p">)</span>
-<span class="c1">#=&gt; prints &#39;Hi, Tom&#39; to STDOUT.</span></code></pre></div>
-
-<p>자바 프로그래밍</p>
-
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="kd">static</span> <span class="nf">main</span> <span class="o">()</span> <span class="o">{</span>
-  <span class="n">system</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Hello world!&quot;</span><span class="o">);</span>  
-<span class="o">}</span>
-<span class="c1">// prints &#39;Hello world!&#39; to STDOUT.</span></code></pre></div>
-
-<h1 id="markdown-language-with-mou">Markdown language with Mou</h1>
-
-<p><img src="http://25.io/mou/Mou_128.png" alt="Mou icon" /></p>
-
-<h2 id="overview">Overview</h2>
-
-<p><strong>Mou</strong>, the missing Markdown editor for <em>web developers</em>.</p>
-
-<h3 id="syntax">Syntax</h3>
-
-<h4 id="strong-and-emphasize">Strong and Emphasize</h4>
-
-<p><strong>strong</strong> or <strong>strong</strong> ( Cmd + B )</p>
-
-<p><em>emphasize</em> or <em>emphasize</em> ( Cmd + I )</p>
-
-<p><strong>Sometimes I want a lot of text to be bold.
-Like, seriously, a <em>LOT</em> of text</strong></p>
-
-<h4 id="blockquotes">Blockquotes</h4>
-
-<blockquote>
-  <p>Right angle brackets &gt; are used for block quotes.</p>
-</blockquote>
-
-<h4 id="links-and-email">Links and Email</h4>
-
-<p>An email <a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#101;&#120;&#097;&#109;&#112;&#108;&#101;&#064;&#101;&#120;&#097;&#109;&#112;&#108;&#101;&#046;&#099;&#111;&#109;">&#101;&#120;&#097;&#109;&#112;&#108;&#101;&#064;&#101;&#120;&#097;&#109;&#112;&#108;&#101;&#046;&#099;&#111;&#109;</a> link.</p>
-
-<p>Simple inline link <a href="http://chenluois.com">http://chenluois.com</a>, another inline link <a href="http://25.io/smaller/">Smaller</a>, one more inline link with title <a href="http://resizesafari.com" title="a Safari extension">Resize</a>.</p>
-
-<p>A <a href="http://25.io/mou/" title="Markdown editor on Mac OS X">reference style</a> link. Input id, then anywhere in the doc, define the link with corresponding id:</p>
-
-<p>Titles ( or called tool tips ) in the links are optional.</p>
-
-<h4 id="images">Images</h4>
-
-<p>An inline image <img src="http://25.io/smaller/favicon.ico" alt="Smaller icon" title="Title here" />, title is optional.</p>
-
-<p>A <img src="http://resizesafari.com/favicon.ico" alt="Resize icon" title="Title" /> reference style image.</p>
-
-<h4 id="inline-code-and-block-code">Inline code and Block code</h4>
-
-<p>Inline code are surround by <code>backtick</code> key. To create a block code:</p>
-
-<pre><code>Indent each line by at least 1 tab, or 4 spaces.
-var Mou = exactlyTheAppIwant;
-</code></pre>
-
-<h4 id="ordered-lists">Ordered Lists</h4>
-
-<p>Ordered lists are created using “1.” + Space:</p>
-
-<ol>
-  <li>Ordered list item</li>
-  <li>Ordered list item</li>
-  <li>Ordered list item</li>
-</ol>
-
-<h4 id="unordered-lists">Unordered Lists</h4>
-
-<p>Unordered list are created using “*” + Space:</p>
-
-<ul>
-  <li>Unordered list item</li>
-  <li>Unordered list item</li>
-  <li>Unordered list item</li>
-</ul>
-
-<p>Or using “-“ + Space:</p>
-
-<ul>
-  <li>Unordered list item</li>
-  <li>Unordered list item</li>
-  <li>Unordered list item</li>
-</ul>
-
-<h4 id="hard-linebreak">Hard Linebreak</h4>
-
-<p>End a line with two or more spaces will create a hard linebreak, called <code>&lt;br /&gt;</code> in HTML. ( Control + Return )<br />
-Above line ended with 2 spaces.</p>
-
-<h4 id="horizontal-rules">Horizontal Rules</h4>
-
-<p>Three or more asterisks or dashes:</p>
+<p>ID 내부에 있는 - - 값으로 인해 이후가 주석처리되고 반드시 로그인 되는 현상이 발생한다.</p>
 
 <hr />
 
-<hr />
+<h4 id="php-1">예시 - 02. 글과 패스워드 출력 (PHP)</h4>
+<p>다음과 같은 쿼리가 존재할 때</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+    <span class="nv">$query</span>  <span class="o">=</span> <span class="s2">&quot;SELECT id, name, inserted, size FROM products</span>
+<span class="s2">               WHERE size = &#39;</span><span class="si">$size</span><span class="s2">&#39;</span>
+<span class="s2">               ORDER BY </span><span class="si">$order</span><span class="s2"> LIMIT </span><span class="si">$limit</span><span class="s2">, </span><span class="si">$offset</span><span class="s2">;&quot;</span><span class="p">;</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">odbc_exec</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$query</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>아래와 같은 질의를 입력함으로써 글과 패스워드를 모두 출력할 수 있다.</p>
+
+<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="s1">&#39;</span>
+<span class="s1">union select &#39;</span><span class="mi">1</span><span class="s1">&#39;, concat(uname||&#39;</span><span class="o">-</span><span class="s1">&#39;||passwd) as name, &#39;</span><span class="mi">1971</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="s1">&#39;, &#39;</span><span class="mi">0</span><span class="err">&#39;</span> <span class="k">from</span> <span class="n">usertable</span><span class="p">;</span>
+<span class="c1">--</span></code></pre></div>
 
 <hr />
 
-<h4 id="headers">Headers</h4>
+<h4 id="section">해결방법</h4>
+<p>이를 해결하는 방법은 다음과 같이 $id 와 $pw 같이 입력 받는 값을 변수에 넣어 유효성 검사를 진행하거나 SQL에 맞게 인코딩 하면 된다.</p>
 
-<p>Setext-style:</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?</span> <span class="nx">php</span>
+    <span class="nv">$id</span> <span class="o">=</span> <span class="nb">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+    <span class="nv">$pw</span> <span class="o">=</span> <span class="nb">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$pw</span><span class="p">);</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM member WHERE ID=&#39;</span><span class="si">$id</span><span class="s2">&#39; AND PW=&#39;</span><span class="si">$pw</span><span class="s2">&#39;&quot;</span><span class="p">);</span>
 
-<h1 id="this-is-h1">This is H1</h1>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">mysql_num_rows</span><span class="p">(</span><span class="nv">$result</span><span class="p">))</span> <span class="p">{</span>
+      <span class="c1">// 로그인 성공.</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="c1">// 사용자의 아이디와 비밀번호가 틀리므로 로그인 실패</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<h2 id="this-is-h2">This is H2</h2>
+<hr />
 
-<p>atx-style:</p>
+<h3 id="section-1">정리</h3>
+<p>SQL Injection은 입력 필드에 SQL문을 입력함으로써
+기존의 쿼리를 무시하고 공격자가 의도하는 쿼리를 수행해
+데이터베이스를 비정상적으로 조작하는 공격이다.</p>
 
-<h1 id="this-is-h1-1">This is H1</h1>
-<p>## This is H2
-### This is H3
-#### This is H4
-##### This is H5
-###### This is H6</p>
+<p>이러한 공격을 막기 위해서는
+입력받은 값의 자료형을 검사하거나, SQL 인코딩을 통해 올바른 값이 들어가도록 처리 해야 한다.</p>
 
-<h3 id="extra-syntax">Extra Syntax</h3>
+<p>JDBC MySQL의 경우 Statement 문을 사용하면 입력받은 값을 sql문에 연결하여 하나의 SQL문으로 만든 뒤 query 를 실행하는데,
+이 경우 SQL Injection 공격에 피해를 받기 쉽다.</p>
 
-<h4 id="footnotes">Footnotes</h4>
-
-<p>Footnotes work mostly like reference-style links. A footnote is made of two things: a marker in the text that will become a superscript number; a footnote definition that will be placed in a list of footnotes at the end of the document. A footnote looks like this:</p>
-
-<p>That’s some text with a footnote.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
-
-<h4 id="strikethrough">Strikethrough</h4>
-
-<p>Wrap with 2 tilde characters:</p>
-
-<p>~~Strikethrough~~</p>
-
-<h4 id="fenced-code-blocks">Fenced Code Blocks</h4>
-
-<p>Start with a line containing 3 or more backticks, and ends with the first line with the same number of backticks:</p>
-
-<p><code>
-Fenced code blocks are like Stardard Markdown’s regular code
-blocks, except that they’re not indented and instead rely on
-a start and end fence lines to delimit the code block.
-</code></p>
-
-<h4 id="tables">Tables</h4>
-
-<p>A simple table looks like this:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>First Header</th>
-      <th>Second Header</th>
-      <th>Third Header</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-    </tr>
-    <tr>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>If you wish, you can add a leading and tailing pipe to each line of the table:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>First Header</th>
-      <th>Second Header</th>
-      <th>Third Header</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-    </tr>
-    <tr>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-      <td>Content Cell</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>Specify alignment for each column by adding colons to separator lines:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">First Header</th>
-      <th style="text-align: center">Second Header</th>
-      <th style="text-align: right">Third Header</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left">Left</td>
-      <td style="text-align: center">Center</td>
-      <td style="text-align: right">Right</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">Left</td>
-      <td style="text-align: center">Center</td>
-      <td style="text-align: right">Right</td>
-    </tr>
-  </tbody>
-</table>
-<div class="footnotes">
-  <ol>
-    <li id="fn:1">
-      <p>And that’s the footnote. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
-    </li>
-  </ol>
-</div>
+<p>따라서 sql문에 연결 하기 전 반드시 자료형 검사를 하거나, PreparedStatement 문을 사용하여 데이터 타입에 맞춰 값을 설정할 수 있도록 처리해야 하겠다.</p>
 
   </article>
   
@@ -350,7 +136,7 @@ a start and end fence lines to delimit the code block.
 
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="/page4">Older</a>
   
   
     <a class="pagination-item newer" href="/page2">Newer</a>
@@ -361,7 +147,7 @@ a start and end fence lines to delimit the code block.
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-10-25T21:47:59+09:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-11-01T22:35:14+09:00">2015</time>. All rights reserved.
         </small>
       </footer>
     </div>

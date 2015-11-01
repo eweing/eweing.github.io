@@ -10,7 +10,7 @@
 
   <title>
     
-      Coding Dragon &middot; Meaning of Life
+      CodingDragon &middot; Meaning of Life
     
   </title>
 
@@ -22,7 +22,7 @@
   <link rel="shortcut icon" href="/public/favicon.ico">
 
   <!-- RSS -->
-  <link rel="alternate" type="application/atom+xml" title="Coding Dragon" href="/atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="CodingDragon" href="/atom.xml">
 </head>
 
 
@@ -31,7 +31,7 @@
     <div class="container content">
       <header class="masthead">
         <h3 class="masthead-title">
-          <a href="/" title="Home">Coding Dragon</a>
+          <a href="/" title="Home">CodingDragon</a>
           <small>Meaning of Life</small>
         </h3>
       </header>
@@ -41,94 +41,94 @@
   
   <article class="post">
     <h1 class="post-title">
-      <a href="/study/2015/10/25/02-SQL-Injection/">
-        SQL Injection
+      <a href="/study/2015/10/25/03-LVS-and-L4Switch/">
+        LVS vs L4 Switch
       </a>
     </h1>
-    
+
     <time datetime="2015-10-25T00:00:00+09:00" class="post-date">25 Oct 2015</time>
 
-    <h2 id="sql--">SQL 삽입 공격</h2>
-<p>응용 프로그램의 보안 상 허점을 의도적으로 이용해, 개발자가 생각하지 못한 SQL문을 실행되게 함으로써 데이터베이스를 비정상적으로 조작하는 공격 방법</p>
+    <h2 id="load-balancing">로드밸런싱 (Load Balancing)</h2>
+<p>특정 프로세스에게 과부하가 걸렸을 때 이를 분산해서 처리하는 방식. <br />
+웹 서비스의 경우 해당 서비스로 인해 발생하는 트래픽이 많을 경우
+여러 대의 서버가 해당 트래픽을 분산 처리 하는 것을 말한다.</p>
 
+<h3 id="section">목적</h3>
 <ol>
-  <li>접근 제어를 우회할 수 있음</li>
-  <li>일반적인 인증과 인증 확인을 무시한 채 OS 단계 명령을 수행</li>
-  <li>DB 내부의 데이터를 뽑아낼 수 있음</li>
+  <li>처리량 증가</li>
+  <li>응답시간 최소화</li>
+  <li>리소스 사용 최적화</li>
+  <li>특정 서버 자원에게 과부하가 걸리는 것을 피하기 위함</li>
 </ol>
 
-<p>개발자가 쓴 쿼리의 나머지 부분을 무시하고 공격자의 쿼리만을 실행할 수 있게 하기 위해 - - (SQL문법상 주석 처리) 를 붙인다.</p>
+<h2 id="section-1">서버 로드밸런싱</h2>
+<p>한 쪽 서버에만 지나치게 요청이 들어오지 않도록 사용량을 분배하는 것.</p>
+
+<h3 id="section-2">알고리즘</h3>
+<ol>
+  <li><strong>Hasing</strong> <br />
+새로운 연결(TCP/UDP)이 일어날 경우 각 클라이언트에 대한 hasing key를 가지고 경로를 설정한다.
+hasing key는 클라이언트의 IP와 port, 혹은 IP 주소 만으로 결정된다.
+메모리를 적게 사용하고 요구 절차가 간단하다.</li>
+  <li><strong>Round-Robin</strong> <br />
+라운드 로빈 방식으로 처리. <br />
+각 클라이언트는 동일하게 취급되며, 각 서버나 경로는 같은 처리량을 보유해야 한다.</li>
+  <li><strong>Weighted Round-Robin</strong> <br />
+서로 다른 처리 능력을 가진 서버가 있을 경우 사용한다. <br />
+가중치를 줘서 많이 처리할 수 있는 서버로 많은 트래픽을 할당한다.</li>
+  <li><strong>Least Connection</strong> <br />
+연결 수가 가장 적은 서버로 네트워크를 연결한다.
+동적인 분산 알고리즘으로 각 서버에 대한 현재 연결 수를 동적으로 카운트 할 수 있다.</li>
+  <li><strong>Weighted Least Connection</strong> <br />
+서버의 처리 능력을 고려하여 가중치를 부여하면서 Least Connection을 적용. <br />
+트래픽을 골고루 분산시킨다.</li>
+</ol>
+
+<h3 id="section-3">서비스 방식</h3>
+<p>네트워크 상단에 L4 스위치 가상 서버가 존재하여
+서버로 들어오는 패킷을 리얼 서버로 트래픽을 균일하게 부하 분산 시킨다.
+만약 리얼서버 중 정상적으로 작동하지 않는 서버가 있다면,
+이를 감지하여 정상적으로 작동하는 서버에게 트래픽을 부하 분산 시킨다.</p>
+
+<h3 id="section-4">장점</h3>
+<ol>
+  <li>고가의 서버로 확장하지 않고 저렴한 비용으로 다수의 서버를 증설하여 경제적을 비용절감 할 수 있다.</li>
+  <li>대량의 트래픽으로 특정 서버에게 부하가 발생할 경우 L4 스위치가 이를 감지하여 합리적으로 부하 분산을 처리한다.</li>
+  <li>1대의 서버 장애가 발생해도 서비스 중단 없이 다른 서버에게 트래픽을 분배하여 서비스 운영이 끊기지 않는다.</li>
+</ol>
 
 <hr />
 
-<h4 id="php">예시 - 01. 로그인 (PHP)</h4>
-
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?</span> <span class="nx">php</span>
-    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM member WHERE ID=&#39;</span><span class="si">$id</span><span class="s2">&#39; AND PW=&#39;</span><span class="si">$pw</span><span class="s2">&#39;&quot;</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">mysql_num_rows</span><span class="p">(</span><span class="nv">$result</span><span class="p">))</span> <span class="p">{</span>
-      <span class="c1">// 로그인 성공</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="c1">// 사용자의 아이디와 비밀번호가 틀리므로 로그인 실패</span>
-    <span class="p">}</span>
-<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
-
-<p>일반적인 경우 이 로직은 정상적으로 로그인 기능을 수행한다.</p>
-
-<p>하지만 여기서 $id에 ‘ OR ‘1’=’1’ –’ 와 같은 값이 들어가게 되면 SQL 쿼리문은 다음과 같이 된다.</p>
-
-<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">member</span> <span class="k">WHERE</span> <span class="n">ID</span><span class="o">=</span><span class="s1">&#39; OR &#39;</span><span class="mi">1</span><span class="s1">&#39;=&#39;</span><span class="mi">1</span><span class="s1">&#39; -- &#39;</span> <span class="k">AND</span> <span class="n">PW</span><span class="o">=</span><span class="s1">&#39;$pw&#39;</span></code></pre></div>
-
-<p>ID 내부에 있는 - - 값으로 인해 이후가 주석처리되고 반드시 로그인 되는 현상이 발생한다.</p>
+<h2 id="l4-switch">L4 Switch</h2>
+<p>IP 주소와 포트를 기반으로 로드밸런싱하는 고가의 하드웨어이다. <br />
+웬만한 서비스에서는 이것만으로도 부하분산을 처리할 수 있다.
+가격이 매우 비싸다는 것이 흠이다.</p>
 
 <hr />
 
-<h4 id="php-1">예시 - 02. 글과 패스워드 출력 (PHP)</h4>
-<p>다음과 같은 쿼리가 존재할 때</p>
+<h2 id="lvs">LVS</h2>
+<p><strong>Linux Virtual Server</strong> <br />
+리눅스 가상 서버 <br />
+고가용성 서버를 구축하기 위해 리눅스 머신을 로드밸런스 하도록 도와주는 운영시스템</p>
 
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-    <span class="nv">$query</span>  <span class="o">=</span> <span class="s2">&quot;SELECT id, name, inserted, size FROM products</span>
-<span class="s2">               WHERE size = &#39;</span><span class="si">$size</span><span class="s2">&#39;</span>
-<span class="s2">               ORDER BY </span><span class="si">$order</span><span class="s2"> LIMIT </span><span class="si">$limit</span><span class="s2">, </span><span class="si">$offset</span><span class="s2">;&quot;</span><span class="p">;</span>
-    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">odbc_exec</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span> <span class="nv">$query</span><span class="p">);</span>
-<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
-
-<p>아래와 같은 질의를 입력함으로써 글과 패스워드를 모두 출력할 수 있다.</p>
-
-<div class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="s1">&#39;</span>
-<span class="s1">union select &#39;</span><span class="mi">1</span><span class="s1">&#39;, concat(uname||&#39;</span><span class="o">-</span><span class="s1">&#39;||passwd) as name, &#39;</span><span class="mi">1971</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="s1">&#39;, &#39;</span><span class="mi">0</span><span class="err">&#39;</span> <span class="k">from</span> <span class="n">usertable</span><span class="p">;</span>
-<span class="c1">--</span></code></pre></div>
+<p>한 대의 서버로 증가하는 인터넷 사용자를 처리하기 힘들어지면서 <br />
+고가용성 서버<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>를 구축 하기 위한 리눅스 머신 로드밸런싱을 도와주는 운영 시스템이다.</p>
 
 <hr />
 
-<h4 id="section">해결방법</h4>
-<p>이를 해결하는 방법은 다음과 같이 $id 와 $pw 같이 입력 받는 값을 변수에 넣어 유효성 검사를 진행하거나 SQL에 맞게 인코딩 하면 된다.</p>
+<h2 id="lvs--l4">LVS &amp; L4</h2>
+<p>두 개 모두 로드밸런싱을 위해 사용된다.
+* L4는 로드밸런싱 처리를 위한 알고리즘이 탑재 되어 있음. 변경하는 것이 까다로움. LVS는 사용자가 직접 세팅 가능.
+* L4는 가격이 매우 비싼 반면, LVS는 오픈 소스가 존재하여 상대적으로 저렴하게 운영 가능.
+* L4는 하드웨어, LVS는 소프트웨어</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
 
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?</span> <span class="nx">php</span>
-    <span class="nv">$id</span> <span class="o">=</span> <span class="nb">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
-    <span class="nv">$pw</span> <span class="o">=</span> <span class="nb">mysql_real_escape_string</span><span class="p">(</span><span class="nv">$pw</span><span class="p">);</span>
-    <span class="nv">$result</span> <span class="o">=</span> <span class="nb">mysql_query</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM member WHERE ID=&#39;</span><span class="si">$id</span><span class="s2">&#39; AND PW=&#39;</span><span class="si">$pw</span><span class="s2">&#39;&quot;</span><span class="p">);</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="nb">mysql_num_rows</span><span class="p">(</span><span class="nv">$result</span><span class="p">))</span> <span class="p">{</span>
-      <span class="c1">// 로그인 성공.</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-      <span class="c1">// 사용자의 아이디와 비밀번호가 틀리므로 로그인 실패</span>
-    <span class="p">}</span>
-<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
-
-<hr />
-
-<h3 id="section-1">정리</h3>
-<p>SQL Injection은 입력 필드에 SQL문을 입력함으로써
-기존의 쿼리를 무시하고 공격자가 의도하는 쿼리를 수행해
-데이터베이스를 비정상적으로 조작하는 공격이다.</p>
-
-<p>이러한 공격을 막기 위해서는
-입력받은 값의 자료형을 검사하거나, SQL 인코딩을 통해 올바른 값이 들어가도록 처리 해야 한다.</p>
-
-<p>JDBC MySQL의 경우 Statement 문을 사용하면 입력받은 값을 sql문에 연결하여 하나의 SQL문으로 만든 뒤 query 를 실행하는데,
-이 경우 SQL Injection 공격에 피해를 받기 쉽다.</p>
-
-<p>따라서 sql문에 연결 하기 전 반드시 자료형 검사를 하거나, PreparedStatement 문을 사용하여 데이터 타입에 맞춰 값을 설정할 수 있도록 처리해야 하겠다.</p>
+      <p><a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
   </article>
   
@@ -147,7 +147,7 @@
 
       <footer class="footer">
         <small>
-          &copy; <time datetime="2015-10-25T21:47:59+09:00">2015</time>. All rights reserved.
+          &copy; <time datetime="2015-11-01T22:35:14+09:00">2015</time>. All rights reserved.
         </small>
       </footer>
     </div>

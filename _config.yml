@@ -5,7 +5,7 @@ permalink:           pretty
 relative_permalinks: true
 
 # Setup
-title:               Coding Dragon
+title:               CodingDragon
 tagline:             Meaning of Life
 url:                 http://eweing.github.io
 paginate:            1
@@ -25,6 +25,6 @@ author:
   email:             gadol.park@gmail.com
 
 # Custom vars
-version:             1.0.0
+version:             2.0.0
 github:
-  repo:              https://github.com/eweing/eweing.github.io.git
+  repo:              https://github.com/poole/poole

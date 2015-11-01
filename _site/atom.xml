@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
- <title>Coding Dragon</title>
+ <title>CodingDragon</title>
  <link href="http://eweing.github.io/atom.xml" rel="self"/>
  <link href="http://eweing.github.io/"/>
- <updated>2015-10-25T21:47:59+09:00</updated>
+ <updated>2015-11-01T22:35:14+09:00</updated>
  <id>http://eweing.github.io</id>
  <author>
    <name>Gajin Park</name>
    <email>gadol.park@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>RDBMS</title>
+   <link href="http://eweing.github.io/bookreader/2015/11/01/RDBMS/"/>
+   <updated>2015-11-01T00:00:00+09:00</updated>
+   <id>http://eweing.github.io/bookreader/2015/11/01/RDBMS</id>
+   <content type="html">&lt;h1 id=&quot;rdbms--&quot;&gt;RDBMS의 정의와 종류&lt;/h1&gt;
+
+&lt;h1 id=&quot;database-&quot;&gt;DATABASE의 역할&lt;/h1&gt;
+
+&lt;h1 id=&quot;rdb-application&quot;&gt;RDB와 Application&lt;/h1&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;정리&lt;/h2&gt;
+</content>
+ </entry>
  
  <entry>
    <title>LVS vs L4 Switch</title>
@@ -70,7 +87,8 @@ hasing key는 클라이언트의 IP와 port, 혹은 IP 주소 만으로 결정�
 
 &lt;h2 id=&quot;l4-switch&quot;&gt;L4 Switch&lt;/h2&gt;
 &lt;p&gt;IP 주소와 포트를 기반으로 로드밸런싱하는 고가의 하드웨어이다. &lt;br /&gt;
-웬만한 서비스에서는 이것만으로도 부하분산을 처리할 수 있다.&lt;/p&gt;
+웬만한 서비스에서는 이것만으로도 부하분산을 처리할 수 있다.
+가격이 매우 비싸다는 것이 흠이다.&lt;/p&gt;
 
 &lt;hr /&gt;
 
@@ -82,6 +100,13 @@ hasing key는 클라이언트의 IP와 port, 혹은 IP 주소 만으로 결정�
 &lt;p&gt;한 대의 서버로 증가하는 인터넷 사용자를 처리하기 힘들어지면서 &lt;br /&gt;
 고가용성 서버&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;를 구축 하기 위한 리눅스 머신 로드밸런싱을 도와주는 운영 시스템이다.&lt;/p&gt;
 
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;lvs--l4&quot;&gt;LVS &amp;amp; L4&lt;/h2&gt;
+&lt;p&gt;두 개 모두 로드밸런싱을 위해 사용된다.
+* L4는 로드밸런싱 처리를 위한 알고리즘이 탑재 되어 있음. 변경하는 것이 까다로움. LVS는 사용자가 직접 세팅 가능.
+* L4는 가격이 매우 비싼 반면, LVS는 오픈 소스가 존재하여 상대적으로 저렴하게 운영 가능.
+* L4는 하드웨어, LVS는 소프트웨어&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:1&quot;&gt;

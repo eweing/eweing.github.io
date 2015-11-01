@@ -3,6 +3,9 @@ layout: page
 title: About
 ---
 
-## The Developer
-91.12.08
-Gadol Park
+### Raina Park
+## developer
+
+
+* [Github](http://www.github.com/eweing)
+* [Blog](http://eweing.github.io)
