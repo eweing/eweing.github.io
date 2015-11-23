@@ -1,33 +1,44 @@
 ---
 layout: default
-title: Home
+body_class: "home-template user"
 ---
+{% include header.html %}
 
-<div class="posts">
-  {% for post in paginator.posts %}
-  <article class="post">
-    <h1 class="post-title">
-      <a href="{{ site.baseurl }}{{ post.url }}">
-        {{ post.title }}
-      </a>
-    </h1>
+<div class="page-content">
+  <div class="wrapper">
+    <div class="home">
+      {% for post in site.posts %}
+      <article class="{%comment%}post_class{%endcomment%}">
 
-    <time datetime="{{ post.date | date_to_xmlschema }}" class="post-date">{{ post.date | date_to_string }}</time>
+          {% if post.image %}
+              <div class="image-holder show">
+                <a href="{{ post.url | prepend: site.baseurl }}" class="inner" style="background-image: url('{{ site.baseurl }}/content/images/{{ post.image }}');">
+                  <img src="{{ site.baseurl }}/content/images/{{ post.image }}">
+              </a>
+            </div>
+          {% endif %}
 
-    {{ post.content }}
-  </article>
-  {% endfor %}
+          <div class="meta">
+            <time datetime="{{ post.date | date: '%Y-%m-%d' }}">
+              <a href="{{ post.url | prepend: site.baseurl }}">{{ post.date | date: "%B %-d, %Y" }}</a>
+            </time>
+          </div>
+
+          <header>
+              <h1><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a></h1>
+          </header>
+
+          <div class="text">
+              <p>{{ post.excerpt }}</p>
+              <a href="{{ post.url | prepend: site.baseurl }}" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      {% endfor %}
+
+      {% include pagination.html %}
+
+    </div>
+  </div>
 </div>
 
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ paginator.next_page_path | prepend: site.baseurl }}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    <a class="pagination-item newer" href="{{ paginator.previous_page_path | prepend: site.baseurl }}">Newer</a>
-  {% else %}
-    <span class="pagination-item newer">Newer</span>
-  {% endif %}
-</div>
+{% include footer.html %}

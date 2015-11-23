@@ -1,30 +1,12 @@
-# Permalinks
-#
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
-relative_permalinks: true
+# Site settings
+title: "Coding Dragon"
+logo: logo.png # image from https://www.flickr.com/photos/lwr/5496279831/in/set-72157594159055823
+email: gadol.park@gmail.com
+description: Meaning of Life
+url: "http://eweing.github.io" # the base hostname & protocol for your site
+baseurl: "" # the subpath of your site, e.g. /blog/
+twitter_username:
+github_username:  eweing
 
-# Setup
-title:               CodingDragon
-tagline:             Meaning of Life
-url:                 http://eweing.github.io
-paginate:            1
-baseurl:             ""
-
-# Assets
-#
-# We specify the directory for Jekyll so we can use @imports.
-sass:
-  sass_dir:          _sass
-  style:            :compressed
-
-# About/contact
-author:
-  name:              Gajin Park
-  url:               https://eweing.github.io
-  email:             gadol.park@gmail.com
-
-# Custom vars
-version:             2.0.0
-github:
-  repo:              https://github.com/poole/poole
+# Build settings
+markdown: kramdown

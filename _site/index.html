@@ -1,283 +1,359 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
   <head>
-  <meta charset="UTF-8">
-  <link href="http://gmpg.org/xfn/11" rel="profile">
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <!-- Enable responsiveness on mobile devices-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Coding Dragon</title>
+  <meta name="description" content="Meaning of Life">
 
-  <title>
-    
-      CodingDragon &middot; Meaning of Life
-    
-  </title>
+  <meta name="HandheldFriendly" content="True">
+  <meta name="viewport" content="width=device-width initial-scale=1">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="shortcut icon" href="">
 
-  <!-- Icons -->
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
-  <link rel="shortcut icon" href="/public/favicon.ico">
 
-  <!-- RSS -->
-  <link rel="alternate" type="application/atom+xml" title="CodingDragon" href="/atom.xml">
+  
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:400,700,400italic,700italic|Open+Sans:400italic,700italic,700,400">
+  <link rel="stylesheet" href="/css/screen.css">
+
+  
+  <link rel="canonical" href="http://eweing.github.io/">
+  <link rel="alternate" type="application/atom+xml" title="Coding Dragon" href="http://eweing.github.io/feed.xml" />
+
+  <script type="text/javascript" src="/assets/javascripts/jquery-2.1.4.min.js"></script>
 </head>
 
 
-  <body>
+  <body class="home-template user">
 
-    <div class="container content">
-      <header class="masthead">
-        <h3 class="masthead-title">
-          <a href="/" title="Home">CodingDragon</a>
-          <small>Meaning of Life</small>
-        </h3>
-      </header>
+    <header role="banner">
+<div class="wrap">
+  <h1>
+    <a class="site-title" href="/">Coding Dragon</a>
+  </h1>
+  <hr>
+  <!--
+    <nav class="site-nav">
+    <div class="trigger">
+    
+    
+    <a class="page-link" href="/about/">About</a>
+    
+    
+    
+    
+    
+    
+    </div>
+    </nav>
+  -->
+</div>
+</header>
 
-      <main>
-        <div class="posts">
-  
-  <article class="post">
-    <h1 class="post-title">
-      <a href="/bookreader/2015/11/01/RDBMS-Physical-Design/">
-        RDBMS Physical Design
-      </a>
-    </h1>
 
-    <time datetime="2015-11-01T00:00:00+09:00" class="post-date">01 Nov 2015</time>
+<div class="page-content">
+  <div class="wrapper">
+    <div class="home">
+      
+      <article class="">
 
-    <h2 id="section">물리적 설계</h2>
+          
+              <div class="image-holder show">
+                <a href="/bookreader/2015/11/22/http-and-network-chap1.html" class="inner" style="background-image: url('/content/images/roon3.jpeg');">
+                  <img src="/content/images/roon3.jpeg">
+              </a>
+            </div>
+          
+
+          <div class="meta">
+            <time datetime="2015-11-22">
+              <a href="/bookreader/2015/11/22/http-and-network-chap1.html">November 22, 2015</a>
+            </time>
+          </div>
+
+          <header>
+              <h1><a href="/bookreader/2015/11/22/http-and-network-chap1.html">HTTP and Network Basic chapter.1</a></h1>
+          </header>
+
+          <div class="text">
+              <p><h2 id="section">기본적인 웹 통신 과정</h2>
+<p>브라우저 (Client) 에서 URL을 입력하여 목적지 (Server)로 송신. <br />
+Server에서 응답이 돌아오면 웹 페이지가 표시 됨.</p>
+
+</p>
+              <a href="/bookreader/2015/11/22/http-and-network-chap1.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
+
+          
+
+          <div class="meta">
+            <time datetime="2015-11-01">
+              <a href="/bookreader/2015/11/01/RDBMS-Physical-Design.html">November 1, 2015</a>
+            </time>
+          </div>
+
+          <header>
+              <h1><a href="/bookreader/2015/11/01/RDBMS-Physical-Design.html">RDBMS Physical Design</a></h1>
+          </header>
+
+          <div class="text">
+              <p><h2 id="section">물리적 설계</h2>
 <p>실제 물리적으로 데이터베이스를 모델링 하는 단계. <br />
 FK로 내려 받은 컬럼들이 인덱스로 설계되는 과정, 뷰와 저장공간 계획,
-부모-자식 간의 무결성처리 등을 함으로써 벼때인 논리 모델링에 살을 붙이는 작업 진행</p>
+부모-자식 간의 무결성처리 등을 함으로써 뼈대인 논리 모델링에 살을 붙이는 작업 진행</p>
 
-<hr />
+</p>
+              <a href="/bookreader/2015/11/01/RDBMS-Physical-Design.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
 
-<h3 id="constraint---">제약조건(Constraint) 정의 및 설계</h3>
-<p>참조 무결성 처리 <br />
-논리적 모델링을 마치고 PK와 FK의 관계를 데이터베이스에 정의. <br />
-<strong><em>제약조건은 반드시 해야 하는 것이 아니다.</em></strong> <br />
-비즈니스 룰 또는 프로그램 로직 성격에 따라 결정하는 것.</p>
+          
 
-<h4 id="constraint----1">Constraint를 지정한다는 것 ?</h4>
-<p>PK와 FK가 입력, 수정, 삭제에 대해서 데이터에 일관성을 주겠다는 의미.</p>
+          <div class="meta">
+            <time datetime="2015-11-01">
+              <a href="/bookreader/2015/11/01/RDBMS-Data-Modeling-2.html">November 1, 2015</a>
+            </time>
+          </div>
 
-<ul>
-  <li>제한 (Restrict)
-    <ul>
-      <li>PK를 수정할 때, 해당 PK를 FK로 가지고 있는 테이블이 여러개 존재한다면 PK가 수정되지 않도록 함</li>
-    </ul>
-  </li>
-  <li>연쇄 (Cascade)
-    <ul>
-      <li>PK를 수정할 때, 해당 PK를 FK로 가지고 있는 테이블이 여러개 존재한다면 PK를 연쇄적으로 수정.</li>
-    </ul>
-  </li>
-</ul>
+          <header>
+              <h1><a href="/bookreader/2015/11/01/RDBMS-Data-Modeling-2.html">RDBMS Data Modeling (2)</a></h1>
+          </header>
 
-<hr />
+          <div class="text">
+              <p><h2 id="section">상세 개념 데이터 모델링</h2>
+<p>기본적으로는 Entity, 속성, 관계를 바탕으로 표현하는 것이지만
+기본 개념 데이터 모델보다 어려울 수 있음.</p>
 
-<h3 id="section-1">데이터 타입</h3>
+</p>
+              <a href="/bookreader/2015/11/01/RDBMS-Data-Modeling-2.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
 
-<h4 id="varchar2">Varchar2</h4>
-<p>VARCHAR2와 CHAR 모두 문자형 타입이지만, 가장 큰 차이는 가변길이이다.</p>
+          
 
-<table>
-  <thead>
-    <tr>
-      <th>VARCHAR2</th>
-      <th>CHAR</th>
-      <th> </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>가변길이</td>
-      <td>입력된 길이만큼 저장</td>
-      <td>남는 공간엔 공백이 들어감.</td>
-    </tr>
-    <tr>
-      <td>최대길이</td>
-      <td>4000 Byte</td>
-      <td>2000 Byte</td>
-    </tr>
-    <tr>
-      <td>특징</td>
-      <td>PCTFREE 값이 적절하지 않을 경우 문제가 발생할 수 있음.</td>
-      <td>길이의 편차가 있는 경우 저장공간 낭비와 수행속도 저하 현상 발생 가능</td>
-    </tr>
-  </tbody>
-</table>
+          <div class="meta">
+            <time datetime="2015-11-01">
+              <a href="/bookreader/2015/11/01/RDBMS-Data-Modeling-1.html">November 1, 2015</a>
+            </time>
+          </div>
 
-<h4 id="number">Number</h4>
-<p><strong><em>숫자가 들어간다고 해서 반드시 Number 타입으로 지정 할 필요 없음</em></strong></p>
+          <header>
+              <h1><a href="/bookreader/2015/11/01/RDBMS-Data-Modeling-1.html">RDBMS Data Modeling (1)</a></h1>
+          </header>
 
-<ul>
-  <li>가변 길이 저장 형식을 따르고 있음</li>
-  <li>LIKE 검색을 사용하는 경우 NUMBER 타입으로 저장하지 말 것.
-    <ul>
-      <li>해당 컬럼의 모든 변수를 문자형으로 변형하여 자료를 검색한다.</li>
-    </ul>
-  </li>
-  <li>숫자와 관련된 모든 표현이 가능하지만 38자리 까지만 표현 가능</li>
-  <li>Primary Key 값을 입력받는 키 값이 숫자일 경우를 제외하고 INDEX를 생성 해야 하는 경우엔
-VARCHAR2 타입을 사용하는 것이 좋다.
-    <ul>
-      <li>단, 연산을 하거나 소수점을 입력 하는 경우 소수점 이하 부분이 반올림 되므로 잘 고려해야 함.</li>
-    </ul>
-  </li>
-</ul>
+          <div class="text">
+              <p><h2 id="section">개념 데이터 모델링</h2>
 
-<h4 id="number--">Number 타입의 표현</h4>
+</p>
+              <a href="/bookreader/2015/11/01/RDBMS-Data-Modeling-1.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
 
-<table>
-  <tbody>
-    <tr>
-      <td>1234567.89</td>
-      <td>NUMBER</td>
-      <td>1234567.89</td>
-    </tr>
-    <tr>
-      <td>1234567.89</td>
-      <td>NUMBER(9)</td>
-      <td>1234568</td>
-    </tr>
-    <tr>
-      <td>1234567.89</td>
-      <td>NUMBER(9,2)</td>
-      <td>1234567.89</td>
-    </tr>
-    <tr>
-      <td>1234567.89</td>
-      <td>NUMBER(9,1)</td>
-      <td>1234567.9</td>
-    </tr>
-    <tr>
-      <td>1234567.89</td>
-      <td>NUMBER(6)</td>
-      <td>exceeds precision</td>
-    </tr>
-    <tr>
-      <td>1234567.89</td>
-      <td>NUMBER(7,-2)</td>
-      <td>1234500</td>
-    </tr>
-    <tr>
-      <td>1234567.89</td>
-      <td>NUMBER(7,2)</td>
-      <td>exceeds precision</td>
-    </tr>
-    <tr>
-      <td>0.1234</td>
-      <td>NUMBER(4,5)</td>
-      <td>.01234</td>
-    </tr>
-    <tr>
-      <td>0.00012</td>
-      <td>NUMBER(4,5)</td>
-      <td>.00012</td>
-    </tr>
-    <tr>
-      <td>0.000126</td>
-      <td>NUMBER(4,5)</td>
-      <td>.00013</td>
-    </tr>
-    <tr>
-      <td>0.0000012</td>
-      <td>NUMBER(2,7)</td>
-      <td>.0000012</td>
-    </tr>
-    <tr>
-      <td>0.00000123</td>
-      <td>NUMBER(2,7)</td>
-      <td>.0000012</td>
-    </tr>
-  </tbody>
-</table>
+          
 
-<h4 id="date">Date</h4>
-<p>타입 지정 방법은 숫자 형식과 비슷 하다. <br />
-날짜 연산이 자유로워 많이 사용하고 있지만,
-일반적으로 시간을 제외한 날짜 연산이 자주 발생하는 경우를 제외하고는
-VARCHAR2를 사용하고, TO_DATE() 함수를 사용하는 것이 좋다.</p>
+          <div class="meta">
+            <time datetime="2015-11-01">
+              <a href="/bookreader/2015/11/01/RDBMS-Concept.html">November 1, 2015</a>
+            </time>
+          </div>
 
-<h4 id="date-">Date타입의 표현</h4>
+          <header>
+              <h1><a href="/bookreader/2015/11/01/RDBMS-Concept.html">RDBMS Concept</a></h1>
+          </header>
 
-<table>
-  <thead>
-    <tr>
-      <th>DATE</th>
-      <th>FROM</th>
-      <th>TO</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>YEAR</td>
-      <td>-4712</td>
-      <td>9999</td>
-    </tr>
-    <tr>
-      <td>MONTH</td>
-      <td>01(0)</td>
-      <td>12(11)</td>
-    </tr>
-    <tr>
-      <td>DAY</td>
-      <td>01</td>
-      <td>31</td>
-    </tr>
-    <tr>
-      <td>HOUR</td>
-      <td>00(0)</td>
-      <td>23</td>
-    </tr>
-    <tr>
-      <td>MINUTE</td>
-      <td>00(0)</td>
-      <td>59</td>
-    </tr>
-    <tr>
-      <td>SECOND</td>
-      <td>00</td>
-      <td>59.9</td>
-    </tr>
-    <tr>
-      <td>TIMEZONE_HOUR</td>
-      <td>-12</td>
-      <td>13</td>
-    </tr>
-    <tr>
-      <td>TIMEZONE_MINUTE</td>
-      <td>00</td>
-      <td>59</td>
-    </tr>
-  </tbody>
-</table>
+          <div class="text">
+              <p><h2 id="rdbms--">RDBMS의 정의와 종류</h2>
 
-  </article>
-  
-</div>
+</p>
+              <a href="/bookreader/2015/11/01/RDBMS-Concept.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
 
-<div class="pagination">
-  
-    <a class="pagination-item older" href="/page2">Older</a>
-  
-  
-    <span class="pagination-item newer">Newer</span>
-  
-</div>
+          
 
-      </main>
+          <div class="meta">
+            <time datetime="2015-10-25">
+              <a href="/study/2015/10/25/03-LVS-and-L4Switch.html">October 25, 2015</a>
+            </time>
+          </div>
 
-      <footer class="footer">
-        <small>
-          &copy; <time datetime="2015-11-02T00:45:45+09:00">2015</time>. All rights reserved.
-        </small>
-      </footer>
+          <header>
+              <h1><a href="/study/2015/10/25/03-LVS-and-L4Switch.html">LVS vs L4 Switch</a></h1>
+          </header>
+
+          <div class="text">
+              <p><h2 id="load-balancing">로드밸런싱 (Load Balancing)</h2>
+<p>특정 프로세스에게 과부하가 걸렸을 때 이를 분산해서 처리하는 방식. <br />
+웹 서비스의 경우 해당 서비스로 인해 발생하는 트래픽이 많을 경우
+여러 대의 서버가 해당 트래픽을 분산 처리 하는 것을 말한다.</p>
+
+</p>
+              <a href="/study/2015/10/25/03-LVS-and-L4Switch.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
+
+          
+
+          <div class="meta">
+            <time datetime="2015-10-25">
+              <a href="/study/2015/10/25/02-SQL-Injection.html">October 25, 2015</a>
+            </time>
+          </div>
+
+          <header>
+              <h1><a href="/study/2015/10/25/02-SQL-Injection.html">SQL Injection</a></h1>
+          </header>
+
+          <div class="text">
+              <p><h2 id="sql--">SQL 삽입 공격</h2>
+<p>응용 프로그램의 보안 상 허점을 의도적으로 이용해, 개발자가 생각하지 못한 SQL문을 실행되게 함으로써 데이터베이스를 비정상적으로 조작하는 공격 방법</p>
+
+</p>
+              <a href="/study/2015/10/25/02-SQL-Injection.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
+
+          
+              <div class="image-holder show">
+                <a href="/2014/12/10/style-test.html" class="inner" style="background-image: url('/content/images/header.jpg');">
+                  <img src="/content/images/header.jpg">
+              </a>
+            </div>
+          
+
+          <div class="meta">
+            <time datetime="2014-12-10">
+              <a href="/2014/12/10/style-test.html">December 10, 2014</a>
+            </time>
+          </div>
+
+          <header>
+              <h1><a href="/2014/12/10/style-test.html">Style Test</a></h1>
+          </header>
+
+          <div class="text">
+              <p><p>Note: This style test is taken verbatum from the official Roon style test on
+Ghost.org <a href="">http://roon.ghost.io/style-test/</a>. The Ghost team is awesome, and
+you should definitely check out their service.</p>
+
+</p>
+              <a href="/2014/12/10/style-test.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+      <article class="">
+
+          
+              <div class="image-holder show">
+                <a href="/jekyll/update/2014/12/05/welcome-to-jekyll.html" class="inner" style="background-image: url('/content/images/roon3.jpeg');">
+                  <img src="/content/images/roon3.jpeg">
+              </a>
+            </div>
+          
+
+          <div class="meta">
+            <time datetime="2014-12-05">
+              <a href="/jekyll/update/2014/12/05/welcome-to-jekyll.html">December 5, 2014</a>
+            </time>
+          </div>
+
+          <header>
+              <h1><a href="/jekyll/update/2014/12/05/welcome-to-jekyll.html">Welcome to Jekyll!</a></h1>
+          </header>
+
+          <div class="text">
+              <p><p>You’ll find this post in your <code>_posts</code> directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run <code>jekyll serve</code>, which launches a web server and auto-regenerates your site when a file is updated.</p>
+
+</p>
+              <a href="/jekyll/update/2014/12/05/welcome-to-jekyll.html" class="readmore">Continue Reading</a>
+          </div>
+      </article>
+      
+
+      
+
+
+
+
     </div>
+  </div>
+</div>
 
+<footer role="contentinfo" class='post-footer'>
+    <div class="inner">
+        <div class="vcard">
+          <a href="/feed.xml" id="btn_feed" class="btn" title="Feed" target="_blank">
+                <span aria-hidden="true" data-icon=")"></span>
+                <strong>Feed</strong>
+            </a>
+
+            
+            <a href="" class="photo circle">
+              <span style="background-image: url('/assets/images/logo.png');">
+                <img src="/assets/images/logo.png" alt="Coding Dragon"/>
+              </span>
+            </a>
+            
+
+            <div class="details">
+                <h4><a href="http://eweing.github.io" class="url n">Coding Dragon</a></h4>
+                <a href="http://eweing.github.io" class="js-remove-domain-schema">http://eweing.github.io</a><br>
+                <span>Published with <a href="https://jekyllrb.org">Jekyll</a></span>
+            </div>
+        </div>
+        <div id="user_bio">
+            <div class="inner">
+                Meaning of Life
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+    
+    <a href="http://eweing.github.io" id="blog_badge">
+            <span style="background-image:
+            url('/assets/images/logo.png');"></span>
+        </a>
+    
+
+    <script>
+      function no_schema_links () {
+        var links = document.querySelectorAll('.js-remove-domain-schema');
+        if (links) {
+          for (i = 0; i < links.length; ++i) {
+            var link = links[i],
+              text = link.innerHTML,
+            no_schema = text.replace(/.*?:\/\//g, "");
+            link.innerHTML = no_schema;
+          }
+        }
+      }
+
+      window.onload = function () {
+        no_schema_links();
+      }
+    </script>
   </body>
+
 </html>
